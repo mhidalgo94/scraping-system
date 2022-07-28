@@ -1,0 +1,24 @@
+buscar no poner paginator especificas vistas
+
+
+terminar las api de 
+busquedas, amazon y ebay 
+    listas 
+    los retriview
+    delete de busquedas a false
+luego coger el front MUI
+
+* crear un programador de scraping cn celery
+
+* crear un envio de correo programado junto con el scaping enviando los log si lo desea o datos en xls o csv
+* Para este necesita un modelo para salvar el archivo en caso de almacenamiento
+
+* montar el proyecto en postgresql con docker
+
+
+Front
+
+Crear estructura como se van mostrar los datos
+Crear el login
+Crear las vistas privadas
+

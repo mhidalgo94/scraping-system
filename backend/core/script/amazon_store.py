@@ -98,15 +98,14 @@ class AmazonWebScraping:
 def ejecut_scraping_Amazon(search, page,company, user):
     scraping = AmazonWebScraping(search, page).run()
     bulk_list_registro = list()
-    search = SearchUserModel.objects.create(search_title=search, mont_page=page, user=user)
+    search = SearchUserModel.objects.create(search_title=search, mont_page=page, user=user,company=company)
     for obj in scraping:
         LogRequestModel.objects.get_or_create(
             search_request=search,
             status_code_request=obj['status_code'],
             date_request=obj['date_request'],
             page=obj['page'],
-            url_page = obj['url_page'],
-            company=company
+            url_page = obj['url_page']
         )
         
         if 'rate' in obj:

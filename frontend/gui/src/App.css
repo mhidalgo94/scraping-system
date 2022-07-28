@@ -1,0 +1,21 @@
+.container{
+    display: flex;
+}
+
+.content-container{
+    width:82%;
+    overflow: auto;
+    height: calc(100vh - 50px);
+    padding-top: 23px;
+    padding-left: 16px;
+    padding-right: 16px
+}
+
+.content-head{
+    margin-bottom: 15px;
+}
+
+.content-title{
+    font-size:2.5rem;
+}
+

@@ -24,12 +24,14 @@ class UserManager(BaseUserManager):
         user.staff = True
         user.save(using=self._db)
         return user
+
     
     def create_superuser(self,email,user_name, password):
 
         user = self.create_user(
             email, user_name,password=password
         )
+        user.is_superuser = True
         user.staff = True
         user.admin = True
         user.save(using=self._db)
@@ -38,15 +40,15 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser,PermissionsMixin):
-    email = models.EmailField(verbose_name="email address",max_length=255,unique=True)
-    user_name = models.CharField(verbose_name="user name", max_length=150, unique=True)
+    firstname = models.CharField(verbose_name="first name", max_length=100)
+    lastname = models.CharField(verbose_name="last name", max_length=100 )
+    email = models.EmailField(verbose_name="email address",max_length=200,unique=True)
+    user_name = models.CharField(verbose_name="user name", max_length=100, unique=True)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
-    admin = models.BooleanField(default=False)
 
     # Overwrite objects
     objects =  UserManager()
-
     USERNAME_FIELD = 'user_name'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS  = ['email']
