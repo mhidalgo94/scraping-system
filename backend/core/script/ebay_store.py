@@ -136,6 +136,6 @@ def ejecut_scraping_Ebay(search, page, company,user):
         )
         bulk_list_registro.append(registro)
 
-        EbayModel.objects.bulk_create(bulk_list_registro)
+    EbayModel.objects.bulk_create(bulk_list_registro)
 
 

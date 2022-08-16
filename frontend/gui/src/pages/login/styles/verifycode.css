@@ -1,0 +1,39 @@
+
+.container-center{
+    max-width: 480px;
+    margin: auto;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.head-content{
+    text-align:center;
+    padding: 10px;
+
+}
+
+.head-content{
+    margin:0px;
+}
+.body-content{
+    align-items: center;
+    justify-content: center;
+}
+
+.resend-code{
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.5714285714285714;
+    font-size: 0.875rem;
+    font-family: Public Sans,sans-serif;
+    color: #00AB55;
+    text-decoration: none;
+    cursor:pointer;
+}
+
+.resend-code:active{
+    color: #058143;
+
+}

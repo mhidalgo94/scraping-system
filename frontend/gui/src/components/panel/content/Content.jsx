@@ -4,14 +4,14 @@ import Body from './Body'
 import './content.css';
 
 
-const Content = ({children, title}) =>{
+const Content = ({children, title,btnTitle,...rest}) =>{
     return(
-        <div>
-            <TitleHead title={title} />
-            <Body >
+        <>
+            <TitleHead title={title} btnTitle={btnTitle} {...rest}/>
+            <Body {...rest}>
                 {children}
             </Body>
-        </div>
+        </>
     )
 
 }

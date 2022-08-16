@@ -2,9 +2,9 @@ import React from "react";
 import "./sidebarleft.css";
 import ListItems from './ListItems'
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
-import AppRegistrationOutlinedIcon from "@mui/icons-material/AppRegistrationOutlined";
+import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import useAuth from '../../../utils/useAuth'
 
@@ -31,8 +31,8 @@ function SideLeftBar() {
           <ul className="sidebar-list">
             <ListItems text='Home' to='/dashboart/home' icons={<HomeOutlinedIcon/>} />
             <ListItems text='Search' to='/dashboart/search' icons={<ScreenSearchDesktopOutlinedIcon/>} />
-            <ListItems text='Search Log' to='/dashboart/search-log' icons={<AppRegistrationOutlinedIcon/>} />
-            <ListItems text='List Users' to='/dashboart/list-users' icons={<PeopleAltOutlinedIcon/>} />
+            <ListItems text='Search Log' to='/dashboart/search-log' icons={<SummarizeOutlinedIcon/>} />
+            <ListItems text='Articles Search' to='/dashboart/search-articles' icons={<Inventory2OutlinedIcon/>} />
             <ListItems text='Logout' to='/logout' icons={<LogoutOutlinedIcon/>} />
           </ul>
         </div>

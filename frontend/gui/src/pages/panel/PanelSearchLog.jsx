@@ -1,7 +1,7 @@
 import PanelPage from "./PanelPage";
 import DataGridSearchLog from '../../components/panel/table/DataGridSearchLog'
 
-function PanelHome(){
+function PanelSearchLog(){
   return (
     <PanelPage title="Search Logs">
         <DataGridSearchLog />
@@ -9,4 +9,4 @@ function PanelHome(){
   );
 };
 
-export default PanelHome;
+export default PanelSearchLog;

@@ -1,8 +1,9 @@
 
-const TitleHead = (props)=>{
+const TitleHead = ({title,BtnTitle})=>{
     return(
-        <div className='content-head'>
-                <h2 className="content-title">{props.title}</h2>
+        <div className='content-head' style={{marginTop:"20px"}}>
+            <h4 className="content-title" style={{fontSize:"1.5rem"}}>{title}</h4>
+            {BtnTitle}
         </div>
     )
 }

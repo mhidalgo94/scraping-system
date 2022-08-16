@@ -8,7 +8,7 @@ from core.data_scraping.models import SearchUserModel,LogRequestModel, AmazonMod
 class AmazonWebScraping:
     URL_BASE = 'https://www.amazon.com'
     HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0',
     "Accept-Language": "en-US, en;q=0.5"
     }
     all_product = []
@@ -44,7 +44,6 @@ class AmazonWebScraping:
 
 
     def send_requests(self,pages):
-        
         for page in range(1, pages+1):
             url = self.create_url(page)
             response = requests.get(url,headers=self.HEADERS,timeout=2)
@@ -86,7 +85,6 @@ class AmazonWebScraping:
             data['url_page'] = url_page
             date = datetime.strptime(response.headers['Date'],'%a, %d %b %Y %H:%M:%S GMT')
             data['date_request']  = date
-            
             self.all_product.append(data)
 
         
@@ -125,6 +123,6 @@ def ejecut_scraping_Amazon(search, page,company, user):
         )
         bulk_list_registro.append(registro)
 
-        AmazonModel.objects.bulk_create(bulk_list_registro)
+    AmazonModel.objects.bulk_create(bulk_list_registro)
 
 

@@ -8,5 +8,5 @@ class AmazonSerializerAPI(serializers.ModelSerializer):
 
     class Meta:
         model = AmazonModel
-        exclude = ['id', 'date_update']
+        exclude = ['date_update','delete']
 

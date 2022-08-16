@@ -1,24 +1,33 @@
-buscar no poner paginator especificas vistas
 
+* crear entorno virtual con variables de entorno
+* crear un envio de correo 
+
+Tengo que terminar la verificacion usuario y crear la recuperacion del password
+
+creear vista fron-end and back-end para validar el token tener cuenta el tiempo update para la validacion token_id
+
+Agregar campo para marcar de favoritos a las busquedas como a los articulos para despues hacer graficos de comparaciones
+
+Tienes que detener el scraping de amazon. Buscar otros mercados con api para afiliados
+
+
+agregar campo imagen a model user
 
 terminar las api de 
 busquedas, amazon y ebay 
     listas 
     los retriview
     delete de busquedas a false
-luego coger el front MUI
+
+
+
+la opcion de botones cambiar a darle click para que salgan las opciones
+
 
 * crear un programador de scraping cn celery
 
-* crear un envio de correo programado junto con el scaping enviando los log si lo desea o datos en xls o csv
 * Para este necesita un modelo para salvar el archivo en caso de almacenamiento
 
 * montar el proyecto en postgresql con docker
 
-
-Front
-
-Crear estructura como se van mostrar los datos
-Crear el login
-Crear las vistas privadas
-
+Me quede en la parte de buscar api red de afiliados.

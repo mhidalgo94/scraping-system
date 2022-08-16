@@ -1,17 +1,52 @@
 import { useState, useEffect } from "react";
-import IconButton from "@mui/material/IconButton";
+import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
 import TextField from '@mui/material/TextField';
+// Icons
+import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import Tooltip from "@mui/material/Tooltip";
-import {
-  DataGrid,
-  GridToolbarContainer,
-  GridToolbarExport,
-} from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
+// Dialog Confirm and Notification
 import DialogConfirm from "../../dialog/dialogconfirm";
 import useAuth from "../../../utils/useAuth";
 import NotificationSnackBars from '../../notification/Notification'
+
+
+function ContentDialogEdit({search, description,setEditSearch,setEditDescription}){
+  setEditSearch(search)
+  setEditDescription(description)
+  return (
+    <>
+      <TextField
+        autoFocus
+        margin="dense"
+        id="search"
+        label="Search"
+        type="email"
+        fullWidth
+        variant="standard"
+        defaultValue={search}
+        onChange={e=>setEditSearch(e.target.value)}
+      />
+      <TextField
+        margin="dense"
+        id="description"
+        label="Description"
+        type="text"
+        fullWidth
+        variant="standard"
+        defaultValue={description}
+        onChange={e=>setEditDescription(e.target.value)}
+
+      />
+    </>
+
+  )
+}
 
 function CustomToolbar() {
   return (
@@ -21,11 +56,9 @@ function CustomToolbar() {
   );
 }
 
-
-
-
-const DataGridSearch = () => {
+function DataGridSearch(){
   const { logoutUser } = useAuth();
+  const navigate = useNavigate()
   // Var data is for info table
   const [data, setData] = useState([]);
   // This loading es for loading fetch data
@@ -37,165 +70,177 @@ const DataGridSearch = () => {
   const [textDialog, setTextDialog] = useState({title:"Confirm!", content:"You are sure make this?"})
   const [openDialog, setOpenDialog] = useState(false); // Open dialog component
   const [loadingAcept, setLoadingAcept] = useState(false) // this loading is for process the fetch delete or edit data row
-  const [disabledAcept, setDisabledAcept] = useState(false) // disabled button accept in dialog component
   // Component Notification
   const [notification, setNotification] = useState({open:false,text:"",horizontal:"center"})
 
+  const token = JSON.parse(localStorage.getItem("authTokens", null));
+  const endpoint = "api/list/search/";
+  const url = `${process.env.REACT_APP_API_URL_BASE}/${endpoint}`;
+  let headers =  {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + token?.access,
+  }
 
-  const getData = async () => {
+  const getData = () => {
     setLoading(true);
-    const token = JSON.parse(localStorage.getItem("authTokens", null));
-    const endpoint = "api/list/search/";
-    const url = `${process.env.REACT_APP_API_URL_BASE}/${endpoint}`;
-    await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token?.access,
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.code === "token_not_valid") {
-          logoutUser();
-        }
-        setData(res.results);
-        setLoading(false);
-      });
+    axios.get(url,{headers}).then(res=>{
+      setData(res.data.results);
+      setLoading(false);
+    }).catch(err=>{
+      if (err.response.statusText==='Unauthorized'){
+        logoutUser();
+      }
+      setNotification( prev=>({...prev,open:true,text:err.message,severity:"error"}));
+      
+    });
   };
 
 
 
   useEffect(() => {
-    getData();
+    axios.get(url,{headers}).then(res=>{
+      setData(res.data.results);
+      setLoading(false);
+    }).catch(err=>{
+      if (err.response.statusText==='Unauthorized'){
+        logoutUser();
+      }
+      setNotification( prev=>({...prev,open:true,text:err.message,severity:"error"}));
+      
+    });
 
     // eslint-disable-next-line
   }, []);
 
 
-  const onAcept = async () => {
+  const onAcept = () => {
     const action = actionButtonsRows.action;
-    const id = actionButtonsRows.values.id
-    const token = JSON.parse(localStorage.getItem("authTokens", null));
-    let endpoint = ""
-    let method = 'PUT' 
+    const id = actionButtonsRows.values.id;
+    let endpoint_ = `api/search/${id}/${action}/`;
+    let url_ = `${process.env.REACT_APP_API_URL_BASE}/${endpoint_}`;
     let body = {search_title:editSearch,description:editDescription}
-    console.log(body)
-    if(action==='edit'){
-      endpoint = `api/search/${id}/update/`
-    }else if(action==='delete'){
-      endpoint = `api/search/${id}/delete/`
-      method = 'DELETE'
-    }
-    const url = `${process.env.REACT_APP_API_URL_BASE}/${endpoint}`;
     setLoadingAcept(true);
-    setDisabledAcept(true)
-    await fetch(url, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token?.access,
-      },
-      body: (action==='edit') ? JSON.stringify(body) : "",
-    }).then((res) => {
-        if (res.json().code === "token_not_valid") {
-          logoutUser();
-        }else if(res.ok){
-          //crear la notificacion confirma la eliminacion
+    switch(action){
+      case 'update':
+        axios.put(url_,body,{headers}).then(res=>{
+          setNotification( prev=>({...prev,open:true,text:"Your search has been successfully updated",severity:"success"}));
           setLoadingAcept(false);
+          setOpenDialog(false)
+          getData();
+          
+        }).catch(err=>{
+          if (err.response.statusText==='Unauthorized'){
+            logoutUser();
+          }
+          setLoading(false);
           setOpenDialog(false);
-          let text = action==="edit" ? "Your data has been successfully updated": "Your data has been deleted."
-          setNotification(prev=>({...prev,open:true, text:text}))
-          setTextDialog({title:"Confirm!", content:"You are sure make this?"})
-          getData()
+          setLoadingAcept(false);
+          setNotification( prev=>({...prev,open:true,text:err.message,severity:"error"}));
+          
+        });
+        break;
+      case 'delete':
+        axios.delete(url_,{headers}).then(res=>{
+          setLoadingAcept(false);
+          setOpenDialog(false)
+          getData();
 
-        }
-      })
+        }).catch(err=>{
+          if (err.response.statusText==='Unauthorized'){
+            logoutUser();
+          }
+          setLoading(false);
+          setOpenDialog(false);
+          setLoadingAcept(false);
+          setNotification( prev=>({...prev,open:true,text:err.message,severity:"error"}));
+        });
+          break
+        default:
+          setNotification( prev=>({...prev,open:true,text:"Error server",severity:"error"}));
+          break;
+      }
+    }
 
-  };
 
   const NotificationClose = (e) => {
     setNotification((prev)=>({...prev, open:false}));
   };
 
-  const ContentDialogEdit = ({search, description})=>{
-    setEditSearch(search)
-    setEditDescription(description)
-    return (
-      <>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="search"
-          label="Search"
-          type="email"
-          fullWidth
-          variant="standard"
-          defaultValue={search}
-          onChange={e=>setEditSearch(e.target.value)}
-        />
-        <TextField
-          margin="dense"
-          id="description"
-          label="Description"
-          type="text"
-          fullWidth
-          variant="standard"
-          defaultValue={description}
-          onChange={e=>setEditDescription(e.target.value)}
-
-        />
-      </>
-  
-    )
-  }
-
   const clickEdit = (event, cellValues) => {
     
-    setTextDialog(prev=>({...prev,title:"Edit Search",content: <ContentDialogEdit search={cellValues.row.search} description={cellValues.row.description}/> }))
-    setActionButtons({action:"edit",values:cellValues})
+    setTextDialog(prev=>({...prev,title:"Edit Search",content: <ContentDialogEdit setEditDescription={setEditDescription} setEditSearch={setEditSearch} search={cellValues.row.search} description={cellValues.row.description}/> }));
+    setActionButtons({action:"update",values:cellValues});
 
-    setDisabledAcept(false)
     setOpenDialog(true);
 
   };
 
   const clickDelete = (event,cellValues)=>{
-    setActionButtons({action:"delete",values:cellValues})
-    setTextDialog((prev)=>({...prev,title:"Delete Record",content:'Are you sure you want to delete this record?'}))
-    setDisabledAcept(false)
+    setActionButtons({action:"delete",values:cellValues});
+    setTextDialog((prev)=>({...prev,title:"Delete Record",content:`You want delete '${cellValues.row.search}'?`}));
 
     setOpenDialog(true)
   }
 
+  const clickViewArticles = (cellValues)=>{
+    const id_ = cellValues.row.id
+    const company_ = cellValues.row.company
+    navigate(`/dashboart/list-articles/${id_}/${company_}`)
+  }
+
+  const clickViewLogArticles = (cellValues)=>{
+    const id_ = cellValues.row.id
+    navigate(`/dashboart/search-log/${id_}`)
+  }
 
   const optionsButtons = (cellValues) => {
     return (
       <>
-        <Tooltip
-          title="Edit"
-          onClick={(event) => {
-            clickEdit(event, cellValues);
+      <Tooltip
+          title="Go Articles"
+          onClick={() => {
+            clickViewArticles(cellValues);
           }}
         >
-          <IconButton
-            style={{ marginRight: "2px" }}
-            aria-label="edit"
-            color="warning"
-          >
-            <ModeEditOutlineOutlinedIcon />
+          <IconButton aria-label="view article" color="primary">
+            <VisibilityOutlinedIcon />
           </IconButton>
-        </Tooltip>
-        <Tooltip
-          title="Delete"
-          onClick={(event) => {
-            clickDelete(event, cellValues);
-          }}
+      </Tooltip>
+      <Tooltip
+        title="Go search logs"
+        onClick={() => {
+          clickViewLogArticles(cellValues);
+        }}
+      >
+          <IconButton aria-label="view article" color="success">
+            <SummarizeOutlinedIcon />
+          </IconButton>
+      </Tooltip>
+      <Tooltip
+        title="Edit"
+        onClick={(event) => {
+          clickEdit(event, cellValues);
+        }}
+      >
+        <IconButton
+          style={{ marginRight: "2px" }}
+          aria-label="edit"
+          color="warning"
         >
-          <IconButton aria-label="delete" color="error">
-            <DeleteOutlinedIcon />
-          </IconButton>
-        </Tooltip>
+          <ModeEditOutlineOutlinedIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip
+        title="Delete"
+        onClick={(event) => {
+          clickDelete(event, cellValues);
+        }}
+      >
+        <IconButton aria-label="delete" color="error">
+          <DeleteOutlinedIcon />
+        </IconButton>
+      </Tooltip>
+      
       </>
     );
   };
@@ -208,19 +253,17 @@ const DataGridSearch = () => {
     search: obj.search_title,
     company: obj.company,
     mont_page: obj.mont_page,
-    create_date: new Date(obj.create_date).toDateString(),
+    create_date: (new Date(obj.create_date)).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " "),//new Date(obj.create_date).toDateString(),
     description: obj.description || "without description",
   }));
   
   let columns = [
-    { field: "search", headerName: "Search", minWidth: 210,flex:1 },
-    { field: "user", headerName: "User Name", minWidth: 150,flex:1 },
-    { field: "email", headerName: "Email", minWidth: 150,flex:1 },
-    { field: "company", headerName: "Company",description:"Company Search", minWidth: 150,flex:1 },
-    { field: "mont_page", headerName: "Mont Page", description:"Mont page in paginator",minWidth: 150,flex:1 },
-    { field: "create_date", headerName: "Date created", width: 150 },
-    { field: "description", headerName: "Description", minWidth: 170,flex:1 },
-    { field: "options", headerName: "Options", minWidth: 100,flex:1, renderCell: optionsButtons, disableClickEventBubbling: true,},
+    { field: "search", headerName: "Search", flex:1 },
+    { field: "company", headerName: "Company",description:"Company Search", flex:1 },
+    { field: "mont_page", headerName: "Mont Page",width:70,description:"Mont page in paginator",flex:1 },
+    { field: "create_date", headerName: "Date created",minWidth: 200 },
+    { field: "description", headerName: "Description", flex:1 },
+    { field: "options", headerName: "Options", flex:1, renderCell: optionsButtons, disableClickEventBubbling: true,},
   ];
 
   return (
@@ -245,8 +288,6 @@ const DataGridSearch = () => {
         title={textDialog.title}
         content={textDialog.content}
         loadingAcept={loadingAcept}
-        disabledAcept={disabledAcept}
-        setDisabledAcept={setDisabledAcept}
       />
       <NotificationSnackBars {...notification} onClose={NotificationClose}  />
     </div>

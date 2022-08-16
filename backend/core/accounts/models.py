@@ -1,18 +1,27 @@
+import uuid
+from django.dispatch import receiver
 from django.db import models
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
+from django.db.models.signals import post_save
+from django.core.mail import send_mail
+
 
 # Create your models here.
 class UserManager(BaseUserManager):
 
        
-    def create_user(self,email,user_name,password=None):
+    def create_user(self,email,user_name,firstname,lastname,password=None,**extra_fields):
         if not email:
             raise ValueError('User most have an email address')
         elif not user_name:
             raise ValueError('User most have an user name')
+        elif not firstname:
+            raise ValueError('User most have an user firstname')
+        elif not lastname:
+            raise ValueError('User most have an user lastname')
 
-        user = self.model(email=self.normalize_email(email), user_name=user_name)
+        user = self.model(email=self.normalize_email(email), user_name=user_name,firstname=firstname,lastname=lastname,**extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 
@@ -44,8 +53,10 @@ class User(AbstractBaseUser,PermissionsMixin):
     lastname = models.CharField(verbose_name="last name", max_length=100 )
     email = models.EmailField(verbose_name="email address",max_length=200,unique=True)
     user_name = models.CharField(verbose_name="user name", max_length=100, unique=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
+    id_verify = models.UUIDField(default = uuid.uuid4, editable = False)
+    date_update = models.DateTimeField(auto_now=True)
 
     # Overwrite objects
     objects =  UserManager()
@@ -54,7 +65,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     REQUIRED_FIELDS  = ['email']
 
     def get_full_name(self):
-        return f'{self.user_name} : {self.email}'
+        return f'{self.firstname} {self.lastname}'
 
     def get_short_name(self):
         return self.user_name
@@ -78,9 +89,9 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.admin
 
 
-
-
-
-
-
+@receiver(post_save, sender=User)
+def post_create_verify_user(sender,instance,created,**kwargs):
+    if created:
+        message = f'Hola {instance.get_full_name()}.\nUsted a creado una cuenta en nuestro systema.\nPara verificar su cuenta utilice este codigo:{instance.id_verify}'
+        send_mail('Registro de Cuenta.', message,'marito.hidalgo94@gmail.com',[instance.email])
 

@@ -10,13 +10,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
-export default function DialogConfirm({open,setOpen,title,content,onAcept,loadingAcept,disabledAcept,setDisabledAcept,children,...rest}) {
+export default function DialogConfirm({open,setOpen,title,content,onAcept,loadingAcept,children,...rest}) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClose = ()=>{
     setOpen(false)
-    setDisabledAcept(false)
   }
 
   return (
@@ -30,7 +29,7 @@ export default function DialogConfirm({open,setOpen,title,content,onAcept,loadin
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button colir="info" size="medium" variant="contained" autoFocus onClick={onAcept} disabled={disabledAcept}>
+          <Button colir="info" size="medium" variant="contained" autoFocus onClick={onAcept} disabled={loadingAcept}>
             Acept
             {loadingAcept && (
                 <CircularProgress

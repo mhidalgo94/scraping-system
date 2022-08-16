@@ -1,21 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import { Link as Lk } from "@mui/material/";
 import Grid from "@mui/material/Grid";
 import { blue } from "@mui/material/colors";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import Notification from "../../components/notification/Notification";
 
 import useAuth from "../../utils/useAuth";
+import './styles/loginpage.css'
 
-const theme = createTheme();
 
 export default function LoginPage() {
   const { loginUser} = useAuth();
@@ -73,25 +71,24 @@ export default function LoginPage() {
     setNotificacion((prev)=>({...prev, open:false}));
   };
 
-  const toSigUp = (e) => {
-    e.preventDefault();
-    navigate("/sign-up");
-  };
-
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Sign In
+      <Container maxWidth="xs" sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent:"center",
+        minHeight:"100vh",
+
+      }} >
+        <Box sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent:"center"
+        }}>
+          <Typography component="h4" variant="h5">
+            <h4 style={{textAlign:'center'}}>Sign In</h4>
+            <p style={{fontSize:"1rem"}}>Enter your details below.</p>
           </Typography>
           <Box
             component="form"
@@ -100,6 +97,7 @@ export default function LoginPage() {
             sx={{ mt: 1 }}
           >
             <TextField
+              size="small"
               margin="normal"
               required
               fullWidth
@@ -110,6 +108,7 @@ export default function LoginPage() {
               autoFocus
             />
             <TextField
+              size="small"
               margin="normal"
               required
               fullWidth
@@ -119,12 +118,13 @@ export default function LoginPage() {
               id="password"
               autoComplete="current-password"
             />
-            <Button
+            <Button className="btn-submit"
               type="submit"
               fullWidth
+              size="small"
               disabled={disabled}
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 1, mb: 2 }}
             >
               Sign In
               {loading && (
@@ -141,22 +141,21 @@ export default function LoginPage() {
                 />
               )}
             </Button>
-            <Notification {...notificacion} onClose={NotificacionClose} />
             <Grid container>
               <Grid item xs>
-                <Lk href="#" variant="body2">
+              <Link className='link-sign' to="/reset-password">
                   Forgot password?
-                </Lk>
+                </Link>
               </Grid>
               <Grid item>
-                <Lk href="/sign-up" variant="body2" onClick={toSigUp}>
-                  {"Don't have an account? Sign Up"}
-                </Lk>
+              <Link className='link-sign' to="/sign-up">
+                  Don't have an account? Sign Up
+              </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
+        <Notification {...notificacion} onClose={NotificacionClose} />
       </Container>
-    </ThemeProvider>
   );
 }

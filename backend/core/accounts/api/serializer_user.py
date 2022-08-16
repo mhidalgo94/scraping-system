@@ -55,3 +55,14 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['user_name', 'email']
+
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(min_length=6, max_length=128,write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['firstname', 'lastname','user_name', 'email', 'password']
+
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)

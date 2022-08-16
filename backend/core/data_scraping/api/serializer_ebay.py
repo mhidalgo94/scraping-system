@@ -6,4 +6,6 @@ class EbaySerializerAPI(serializers.ModelSerializer):
 
     class Meta:
         model = EbayModel
-        exclude = ['id', 'date_update', 'delete']
+        fields = ['id','search','page','product', 'img','url_product','rate','price','old_price','favorite','create_date','get_save']
+
+
