@@ -13,7 +13,7 @@ import DialogConfirm from '../../components/dialog/dialogconfirm'
 import './styles/verifycode.css';
 
 
-function VerifyCode(){
+function VerifyCodeToPassword(){
     const {username} = useParams();
     const navigate = useNavigate()
     const [valueCode ,setValueCode] = useState('')
@@ -38,13 +38,13 @@ function VerifyCode(){
             code:valueCode
         }
         axios.post(url,body,{headers:{"content-type":"application/json"}}).then(res=>{
-            setLoading(false)
+            setLoading(false);
+            const code = res.data.code;
             if (res.status === 200){
-                navigate('/login')
+                navigate(`/password-reset/${code}`)
             }
         }).catch(err=>{
             setLoading(false)
-            console.log(err)
             const mensaje = err.response.data.detail;
             setNotificacion({...notificacion, text:mensaje, open:true,severity:"error"})
         })
@@ -61,7 +61,6 @@ function VerifyCode(){
             setNotificacion({...notificacion, text:mensaje, open:true,severity:"success"})
             setValueCode('')
         }).catch(err=>{
-            console.log(err)
             setLoading(false)
             const mensaje = err.response.data.detail;
             setNotificacion({...notificacion, text:mensaje, open:true,severity:"error"})
@@ -122,4 +121,4 @@ function VerifyCode(){
     )
 }
 
-export default VerifyCode;
+export default VerifyCodeToPassword;

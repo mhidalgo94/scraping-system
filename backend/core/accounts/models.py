@@ -5,7 +5,7 @@ from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db.models.signals import post_save
 from django.core.mail import send_mail
-
+from django.conf import settings
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -93,5 +93,5 @@ class User(AbstractBaseUser,PermissionsMixin):
 def post_create_verify_user(sender,instance,created,**kwargs):
     if created:
         message = f'Hola {instance.get_full_name()}.\nUsted a creado una cuenta en nuestro systema.\nPara verificar su cuenta utilice este codigo:{instance.id_verify}'
-        send_mail('Registro de Cuenta.', message,'marito.hidalgo94@gmail.com',[instance.email])
+        send_mail('Registro de Cuenta.', message, settings.EMAIL_HOST_USER,[instance.email])
 

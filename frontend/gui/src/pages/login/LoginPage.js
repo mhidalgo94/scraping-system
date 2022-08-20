@@ -143,7 +143,7 @@ export default function LoginPage() {
             </Button>
             <Grid container>
               <Grid item xs>
-              <Link className='link-sign' to="/reset-password">
+              <Link className='link-sign' to="/forgot-password">
                   Forgot password?
                 </Link>
               </Grid>

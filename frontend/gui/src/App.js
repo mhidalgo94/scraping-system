@@ -10,6 +10,9 @@ import PanelRegister from './pages/panel/PanelRegister';
 import Loginpage from './pages/login/LoginPage';
 import SignUp from './pages/login/SignUp';
 import VerifyCode from './pages/login/VerifyCode';
+import VerifyCodeToPassword from './pages/login/VerifyCodeToPassword'; 
+import ForgotPassword from './pages/login/ForgotPassword'
+import ResetPassword from './pages/login/ResetPassword'
 import {AuthProvider} from './context/authContext';
 import "./App.css";
 
@@ -22,6 +25,9 @@ function App() {
           <Route path="/login" element={<Loginpage/>} />
           <Route path="/sign-up" element={<SignUp/>} />
           <Route path="/sign-up/verify-code/:username" element={<VerifyCode/>} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
+          <Route path="/verify-code-to-password/:username" element={<VerifyCodeToPassword/>} />
+          <Route path="/password-reset/:code" element={<ResetPassword/>} />
             <Route element={<PrivateRoute />}>
               <Route path='dashboart/home' element={<PanelHome />} />
               <Route path='dashboart/search' element={<PanelSearch />} />
