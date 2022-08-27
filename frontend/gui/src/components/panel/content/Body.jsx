@@ -1,10 +1,11 @@
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
-const Body = ({children}) =>{
+const Body = ({children, loading=false}) =>{
     return (
         <div className="content-body">
-            {children}
+            {loading ? (<span className='loading-circular-progress'><CircularProgress /></span>) : children }
         </div>
     )
 }

@@ -30,7 +30,7 @@ function VerifyCode(){
     
     const handleSubmit = (event)=>{
         event.preventDefault();
-        setLoading(true)
+        setLoading(true);
         const endpoint = 'api/user/verify-code/'
         const url = `${process.env.REACT_APP_API_URL_BASE}/${endpoint}`
         const body = {
@@ -40,11 +40,10 @@ function VerifyCode(){
         axios.post(url,body,{headers:{"content-type":"application/json"}}).then(res=>{
             setLoading(false)
             if (res.status === 200){
-                navigate('/login')
+                navigate('/login');
             }
         }).catch(err=>{
-            setLoading(false)
-            console.log(err)
+            setLoading(false);
             const mensaje = err.response.data.detail;
             setNotificacion({...notificacion, text:mensaje, open:true,severity:"error"})
         })
@@ -61,8 +60,7 @@ function VerifyCode(){
             setNotificacion({...notificacion, text:mensaje, open:true,severity:"success"})
             setValueCode('')
         }).catch(err=>{
-            console.log(err)
-            setLoading(false)
+            setLoading(false);
             const mensaje = err.response.data.detail;
             setNotificacion({...notificacion, text:mensaje, open:true,severity:"error"})
             setValueCode('')

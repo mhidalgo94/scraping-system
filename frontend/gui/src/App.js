@@ -6,7 +6,8 @@ import PanelArticles from "./pages/panel/PanelArticles";
 import PanelSearch from './pages/panel/PanelSearch';
 import PanelSearchLogAll from './pages/panel/PanelSearchLogAll';
 import PanelSearchLog from './pages/panel/PanelSearchLog';
-import PanelRegister from './pages/panel/PanelRegister';
+import PanelUsers from './pages/panel/PanelUser';
+import PanelUserEdit from './pages/panel/PanelUserEdit';
 import Loginpage from './pages/login/LoginPage';
 import SignUp from './pages/login/SignUp';
 import VerifyCode from './pages/login/VerifyCode';
@@ -29,12 +30,13 @@ function App() {
           <Route path="/verify-code-to-password/:username" element={<VerifyCodeToPassword/>} />
           <Route path="/password-reset/:code" element={<ResetPassword/>} />
             <Route element={<PrivateRoute />}>
-              <Route path='dashboart/home' element={<PanelHome />} />
-              <Route path='dashboart/search' element={<PanelSearch />} />
+              <Route path='/dashboart/home' element={<PanelHome />} />
+              <Route path='/dashboart/search' element={<PanelSearch />} />
               <Route path='/dashboart/search-log' element={<PanelSearchLogAll />} />
               <Route path='/dashboart/search-log/:idLog' element={<PanelSearchLog />} />
               <Route path='/dashboart/list-articles/:searchId/:company' element={<PanelArticles />} />
-              <Route path='dashboart/register-user' element={<PanelRegister />} />
+              <Route path='/dashboart/user' element={<PanelUsers />} />
+              <Route path='/dashboart/user/:userId' element={<PanelUserEdit />} />
             </Route>
           <Route path="*" element={<h1>Not found</h1>} />
         </Routes>

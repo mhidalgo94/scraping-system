@@ -55,23 +55,23 @@ function VerifyCodeToPassword(){
         const url = `${process.env.REACT_APP_API_URL_BASE}/api/user/resend-code/`;
         const body = {username};
         axios.post(url,body,{headers:{"content-type":"application/json"}}).then(res=>{
-            setLoading(false)
-            setOpenDialog(false)
+            setLoading(false);
+            setOpenDialog(false);
             const mensaje = res.data.detail;
-            setNotificacion({...notificacion, text:mensaje, open:true,severity:"success"})
-            setValueCode('')
+            setNotificacion({...notificacion, text:mensaje, open:true,severity:"success"});
+            setValueCode('');
         }).catch(err=>{
-            setLoading(false)
+            setLoading(false);
             const mensaje = err.response.data.detail;
-            setNotificacion({...notificacion, text:mensaje, open:true,severity:"error"})
-            setValueCode('')
+            setNotificacion({...notificacion, text:mensaje, open:true,severity:"error"});
+            setValueCode('');
 
         })
     }
 
     const handleResendCode= ()=>{
-        setOpenDialog(true)
-        setTextDialog({...textDialog,title:"New code verification.",content:"You want a new verification code?"})
+        setOpenDialog(true);
+        setTextDialog({...textDialog,title:"New code verification.",content:"You want a new verification code?"});
     }
 
     return (

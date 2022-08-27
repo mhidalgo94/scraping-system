@@ -11,9 +11,9 @@ import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import Tooltip from "@mui/material/Tooltip";
 import { DataGrid, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
 // Dialog Confirm and Notification
-import DialogConfirm from "../../dialog/dialogconfirm";
-import useAuth from "../../../utils/useAuth";
-import NotificationSnackBars from '../../notification/Notification'
+import DialogConfirm from "../../../dialog/dialogconfirm";
+import useAuth from "../../../../utils/useAuth";
+import NotificationSnackBars from '../../../notification/Notification'
 
 
 function ContentDialogEdit({search, description,setEditSearch,setEditDescription}){

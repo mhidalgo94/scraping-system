@@ -48,6 +48,9 @@ class UserManager(BaseUserManager):
 
 
 
+def upload_to_image(instance, filename):
+    return 'user/images/%s/%s' % (instance.user_name, filename)
+
 class User(AbstractBaseUser,PermissionsMixin):
     firstname = models.CharField(verbose_name="first name", max_length=100)
     lastname = models.CharField(verbose_name="last name", max_length=100 )
@@ -57,12 +60,16 @@ class User(AbstractBaseUser,PermissionsMixin):
     staff = models.BooleanField(default=False)
     id_verify = models.UUIDField(default = uuid.uuid4, editable = False)
     date_update = models.DateTimeField(auto_now=True)
+    img = models.ImageField(verbose_name='Imagen', null=True, blank=True, upload_to=upload_to_image)
 
     # Overwrite objects
     objects =  UserManager()
     USERNAME_FIELD = 'user_name'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS  = ['email']
+
+    def upload_to_image(self):
+        return f'{self.user_name}/'
 
     def get_full_name(self):
         return f'{self.firstname} {self.lastname}'
@@ -86,7 +93,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     @property
     def is_admin(self):
-        return self.admin
+        return self.staff
 
 
 @receiver(post_save, sender=User)

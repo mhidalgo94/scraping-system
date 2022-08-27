@@ -60,13 +60,11 @@ function SignUp() {
     const url = `${process.env.REACT_APP_API_URL_BASE}/${endpoint}`;
     axios.post(url,JSON.stringify(body),{headers:{"content-type":"application/json"}}).then(res=> {
       setLoading(false);
-      console.log(res)
       const {user_name} = res.data.user;
       navigate(`/sign-up/verify-code/${user_name}`);
 
     }).catch(err=>{
-      console.log(err)
-      let text = String(Object.values(err.response.data.detail)).replace(",", " - ") || err.response.data.detail
+      let text = String(Object.values(err.response.data.detail)).replace(",", " - ") || err.response.data.detail;
       setLoading(false);
       setNotificacion({...notificacion, open:true, text,color:'error'})
     })
@@ -74,9 +72,9 @@ function SignUp() {
 
   useEffect(()=>{
     if(firstName.valid && lastName.valid && userName.valid && email.valid && password.valid){
-      setBtnDisabled(false)
+      setBtnDisabled(false);
     }else{
-      setBtnDisabled(true)
+      setBtnDisabled(true);
     }
   },[lastName, email, password, firstName, userName])
 

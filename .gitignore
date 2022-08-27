@@ -142,6 +142,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+backend/config/.db.sqlite3
+backend/core/accounts/migrations/
+
 
 .vscode
 terminar.txt

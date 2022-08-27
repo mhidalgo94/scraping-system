@@ -13,9 +13,7 @@ const Panel = ({children,...rest}) => {
         <SideLeftBar />
         <div className="content-container">
           <div className="content-center">
-            <Content {...rest}>
-                {children}
-            </Content>
+            <Content {...rest}>{children}</Content>
           </div>
         </div>
       </div>

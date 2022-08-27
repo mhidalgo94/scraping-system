@@ -12,6 +12,7 @@ class TokenObtainSerializer(TokenObtainPairSerializer):
         token['user_name'] = user.user_name
         token['firstname'] = user.firstname
         token['lastname'] = user.lastname
+        token['mang'] = user.is_superuser
         return token
 
 
@@ -44,10 +45,11 @@ class UserPublicSerializerAPI(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
 
-
     class Meta:
         model = User
-        fields = ['firstname','lastname','email','username','is_active', 'is_staff','is_superuser']
+        fields = ['firstname','lastname','email','user_name','is_active', 'is_staff','is_superuser','last_login','img']
+
+
 
 
 class LoginSerializer(serializers.ModelSerializer):
@@ -78,13 +80,34 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
-
         return attrs
 
 
     def update(self, instance, validated_data):
-
         instance.set_password(validated_data['password'])
         instance.save()
-
         return instance
+
+class UserRetrieViewSerializerAPI(serializers.ModelSerializer):
+    firstname = serializers.CharField(required=False)
+    lastname = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+    user_name = serializers.CharField(required=False)
+    staff = serializers.BooleanField(required=False)
+    is_active = serializers.BooleanField(required=False)
+    img = serializers.ImageField(required=False)
+    password = serializers.CharField(write_only=True, required=False)
+    last_login = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    date_update = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+
+
+    class Meta:
+        model = User
+        fields = ['firstname','lastname','email','user_name', 'password','is_active','staff','img', 'last_login', 'date_update']
+
+    def update(self, instance, validated_data):
+        user = super().update(instance, validated_data)
+        if 'password' in validated_data:
+            user.set_password(validated_data['password'])
+            user.save()
+        return user

@@ -4,9 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import DataGridArticles from '../../table/DataGridArticles'
-import BackupTableOutlinedIcon from '@mui/icons-material/BackupTableOutlined';
-import ViewCompactAltOutlinedIcon from '@mui/icons-material/ViewCompactAltOutlined';
+import DataGridArticles from '../../table/articles/DataGridArticles'
 import ContainerCard from '../../card/containerCard'
 
 function TabPanel(props) {
@@ -50,11 +48,11 @@ function TabsArticles() {
   };
 
   return (
-    <Box sx={{ width: '100%',padding:"0px" }}>
+    <Box sx={{ width: '100%'}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Table" {...a11yProps(0)} iconPosition="start" icon={<BackupTableOutlinedIcon />} />
-          <Tab label="Card" {...a11yProps(1)} iconPosition="start" icon={<ViewCompactAltOutlinedIcon/>} />
+          <Tab label="Table" {...a11yProps(0)} iconPosition="start" />
+          <Tab label="Card" {...a11yProps(1)} iconPosition="start" />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0} style={{padding:'0px'}}>

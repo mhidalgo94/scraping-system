@@ -1,11 +1,15 @@
 import PanelPage from "./PanelPage";
+import TabsUsers from "../../components/panel/tabs/users/TabsUsers"
 
-function PanelUser(){
+
+
+function PanelUsers(){
+
   return (
-    <PanelPage title="This is de panel user">
-      <h4>User</h4>
+    <PanelPage title='Users'>
+      <TabsUsers style={{padding:"0px"}}/>
     </PanelPage>
   );
 };
 
-export default PanelUser;
+export default PanelUsers;

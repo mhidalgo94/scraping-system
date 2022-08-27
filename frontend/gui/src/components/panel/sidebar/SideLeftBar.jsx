@@ -6,11 +6,12 @@ import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import useAuth from '../../../utils/useAuth'
 
 
 function SideLeftBar() {
-  const {user} = useAuth()
+  const {user} = useAuth();
 
   
   return (
@@ -33,6 +34,10 @@ function SideLeftBar() {
             <ListItems text='Search' to='/dashboart/search' icons={<ScreenSearchDesktopOutlinedIcon/>} />
             <ListItems text='Search Log' to='/dashboart/search-log' icons={<SummarizeOutlinedIcon/>} />
             <ListItems text='Articles Search' to='/dashboart/search-articles' icons={<Inventory2OutlinedIcon/>} />
+            {user.mang && (
+              <ListItems text='Users' to='/dashboart/user' icons={<PeopleAltOutlinedIcon />} />
+
+            )}
             <ListItems text='Logout' to='/logout' icons={<LogoutOutlinedIcon/>} />
           </ul>
         </div>

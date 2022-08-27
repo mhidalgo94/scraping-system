@@ -10,11 +10,13 @@ const ListItems = ({text,to,icons}) => {
     const location = useLocation();
     const [active, setActive] = useState(false)
     const className = active ? 'active' : "";
+
     const To = ()=>{
         if(to==='/logout'){
             logoutUser()
+        }else{
+            navigate(to)
         }
-        navigate(to)
     }
     
     useEffect(()=>{

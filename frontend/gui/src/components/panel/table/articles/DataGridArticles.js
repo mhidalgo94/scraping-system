@@ -4,18 +4,17 @@ import axios from 'axios'
 import Tooltip from "@mui/material/Tooltip";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
-import CheckedComponent from '../../checked/checkedComponent'
+import CheckedComponent from '../../../checked/checkedComponent'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import Rating from '@mui/material/Rating';
-// import Box from '@mui/material/Box';
-import DialogConfirm from '../../dialog/dialogconfirm'
-import NotificationSnackBars from '../../notification/Notification'
+import DialogConfirm from '../../../dialog/dialogconfirm'
+import NotificationSnackBars from '../../../notification/Notification'
 
 import IconButton from "@mui/material/IconButton";
 
 import { DataGrid, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
-import useAuth from "../../../utils/useAuth";
+import useAuth from "../../../../utils/useAuth";
 
 function CustomToolbar() {
     return (
@@ -60,7 +59,7 @@ const DataGridArticles = ()=>{
     }).catch(err=> {
       if (err.response.statusText==='Unauthorized'){
         setLoadingAcept(false);
-        logoutUser()
+        logoutUser();
       }
       setNotification( prev=>({...prev,open:true,text:err.message,severity:"error"}));
       setLoading(false);

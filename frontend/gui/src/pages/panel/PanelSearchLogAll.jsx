@@ -1,5 +1,5 @@
 import PanelPage from "./PanelPage";
-import DataGridSearchLogAll from '../../components/panel/table/DataGridSearchLogAll'
+import DataGridSearchLogAll from '../../components/panel/table/articles/DataGridSearchLogAll'
 
 function PanelSearchLogsAll(){
   return (

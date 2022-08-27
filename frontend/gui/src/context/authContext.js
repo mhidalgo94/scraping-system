@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateToken = async () => {
-    console.log('Update token!!!')
     const url = "api/refresh/token/";
     // const refresh = { token: authTokens?.refresh };
     let r = await fetchRefreshToken(url, "POST");

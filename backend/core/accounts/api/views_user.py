@@ -1,9 +1,10 @@
 import uuid
 from datetime import timedelta
 from django.utils import timezone
-from .serializer_user import TokenObtainSerializer, ChangePasswordSerializer
+from .serializer_user import TokenObtainSerializer, UserSerializer, UserRetrieViewSerializerAPI
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, DestroyAPIView, RetrieveAPIView, UpdateAPIView
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -105,3 +106,52 @@ class ChangePassowrdWithCode(APIView):
                 return Response({"detail":"Your verification code is expired. Resend your code"}, status= status.HTTP_401_UNAUTHORIZED)
 
         return Response({'detail':'Not Found.'}, status=status.HTTP_404_NOT_FOUND)
+
+class UserListAPIView(ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        params = self.request.query_params
+        if "status" in params:
+            status = int(params['status']) == 1
+            user = User.objects.filter(is_active=status)
+            return user
+        else:
+            return User.objects.all()
+
+
+class UserRetrieveAPIView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRetrieViewSerializerAPI
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'user_name'
+
+
+
+class UserUpdateAPIView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRetrieViewSerializerAPI
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'user_name'
+
+
+class UserDestroyAPIView(DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+
+    def delete(self,request, username):
+        qs_delete = self.get_queryset().get(user_name=username)
+        if qs_delete.delete:
+            qs_delete.delete()
+            return Response({"Detail":"Delete complete"}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({"Detail":"Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+class UserDestroyEverAPIView(DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    lookup_field = 'user_name'
