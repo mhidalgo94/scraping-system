@@ -143,7 +143,7 @@ yarn-debug.log*
 yarn-error.log*
 
 backend/config/.db.sqlite3
-backend/core/accounts/migrations/
+backend/core/accounts/migrations/*
 
 
 .vscode
