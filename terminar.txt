@@ -1,12 +1,11 @@
 
-arreglar botones en las tablas igual que user
 hacer la vista de buscar arrticulos 
+
+* crear un programador de scraping cn celery
 
 crear las notificaiones
 craer vetnana de configuracion
 
-crear el programados de busqueda con celery
-* crear un programador de scraping cn celery
 
 
 la opcion de botones cambiar a darle click para que salgan las opciones esto en en las tablas DataGrid

@@ -83,7 +83,7 @@ function FormUser({firstname, lastname, user_name,email, last_login, date_update
             <div className="container-footer-user">
                 {user.mang && (
                     
-                    <Button variant="contained" disabled={loading} color="error" onClick={handleDeleteUser}>Delete
+                    <Button variant="contained" disabled={loading} id="btn-error" onClick={handleDeleteUser}>Delete
                     {loading && (
                         <CircularProgress
                         size={24}
@@ -99,7 +99,7 @@ function FormUser({firstname, lastname, user_name,email, last_login, date_update
                     )}
                     </Button>
                 )}
-                <Button className="btn-success" disabled={loading} variant="contained" type="submit" color="success">Save Change
+                <Button id="btn-success" disabled={loading} variant="contained" type="submit">Save Change
                 {loading && (
                         <CircularProgress
                         size={24}

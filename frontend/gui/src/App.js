@@ -8,6 +8,7 @@ import PanelSearchLogAll from './pages/panel/PanelSearchLogAll';
 import PanelSearchLog from './pages/panel/PanelSearchLog';
 import PanelUsers from './pages/panel/PanelUser';
 import PanelUserEdit from './pages/panel/PanelUserEdit';
+import PanelSearchArticles from './pages/panel/PanelSearchArticles';
 import Loginpage from './pages/login/LoginPage';
 import SignUp from './pages/login/SignUp';
 import VerifyCode from './pages/login/VerifyCode';
@@ -32,6 +33,7 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path='/dashboart/home' element={<PanelHome />} />
               <Route path='/dashboart/search' element={<PanelSearch />} />
+              <Route path='/dashboart/search-articles' element={<PanelSearchArticles />} />
               <Route path='/dashboart/search-log' element={<PanelSearchLogAll />} />
               <Route path='/dashboart/search-log/:idLog' element={<PanelSearchLog />} />
               <Route path='/dashboart/list-articles/:searchId/:company' element={<PanelArticles />} />
