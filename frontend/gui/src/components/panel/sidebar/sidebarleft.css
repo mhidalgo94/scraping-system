@@ -1,5 +1,5 @@
 .sidebarleft{
-    width: 18%;
+    width: 15%;
     height: calc(100vh - 50px);
     background-color:rgb(251,251,255);
     position: sticky;
@@ -30,8 +30,22 @@
     height: 40px;
 }
 
-.sidebar-name-profile{
+.sidebar-fullname-profile{
     font-size:18px;
+    margin: 0px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.sidebar-username-profile{
+    margin: 0px;
+    font-size: 0.875rem;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgb(99, 115, 129);
 }
 
 .sidebarleft-wrapper{

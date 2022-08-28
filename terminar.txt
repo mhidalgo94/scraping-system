@@ -1,9 +1,9 @@
-Finish fron view create user with accont admin in dashboart
+
+arreglar botones en las tablas igual que user
+hacer la vista de buscar arrticulos 
 
 crear las notificaiones
 craer vetnana de configuracion
-hacer la vista de buscar arrticulos 
-arreglar el info username and foto
 
 crear el programados de busqueda con celery
 * crear un programador de scraping cn celery

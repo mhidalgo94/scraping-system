@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.conf import settings
 from ..models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -8,10 +9,11 @@ class TokenObtainSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls,user):
         token = super().get_token(user)
-
         token['user_name'] = user.user_name
         token['firstname'] = user.firstname
         token['lastname'] = user.lastname
+        if user.img:
+            token['image'] = f'{settings.MEDIA_URL}{str(user.img)}'
         token['mang'] = user.is_superuser
         return token
 

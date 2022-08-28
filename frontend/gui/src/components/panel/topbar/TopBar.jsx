@@ -7,7 +7,7 @@ import './topbar.css';
 
 
 function TopBar() {
-    let {user} = useAuth()
+    let {user} = useAuth();
   return (
     <div className='topbar'>
         <div className='topbarWrapper'>
@@ -25,7 +25,7 @@ function TopBar() {
                 <div className='topbarIcons'>
                     <SettingsOutlinedIcon/>
                 </div>
-                <img src="https://images.pexels.com/photos/8159657/pexels-photo-8159657.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" className='img-profile' alt="img-profile"/>
+                <img src={user.image ? `${process.env.REACT_APP_API_URL_BASE}${user.image}` : '/images/default-image-avatar.jpg'} className='img-profile' alt="img-profile"/>
             </div>
         </div>
 

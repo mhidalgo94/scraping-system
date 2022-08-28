@@ -121,7 +121,7 @@ const DataGridUsers = ({status=null})=>{
     email : obj.email,
     status : obj.is_active,
     last_login :  (new Date(obj.last_login)).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " "),//new Date(obj.create_date).toDateString(),
-    img: obj.img,
+    img: obj.img || '/images/default-image-avatar.jpg',
 
   }));
   

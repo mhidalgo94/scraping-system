@@ -20,11 +20,14 @@ function SideLeftBar() {
         <div className="container-img-profile">
           <img
             className="img-profile-sidebar"
-            src="https://images.pexels.com/photos/8159657/pexels-photo-8159657.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src={user.image ? `${process.env.REACT_APP_API_URL_BASE}${user.image}` : '/images/default-image-avatar.jpg'}
             alt="imagen-profile"
           />
         </div>
-        <h2 className="sidebar-name-profile">{user?.user_name || 'unknown'}</h2>
+        <div>
+          <h2 className="sidebar-fullname-profile">{`${user.firstname} ${user.lastname}`}</h2>
+          <p className="sidebar-staff-profile">{user.mang ? 'admin' : 'client'}</p>
+        </div>
       </div>
       <div className="sidebarleft-wrapper">
         <div className="sidebarleft-menu">

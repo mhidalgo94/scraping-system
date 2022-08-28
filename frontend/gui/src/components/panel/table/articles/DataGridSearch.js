@@ -3,13 +3,11 @@ import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 // Icons
-import IconButton from "@mui/material/IconButton";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
-import Tooltip from "@mui/material/Tooltip";
-import { DataGrid, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarExport,GridActionsCellItem} from "@mui/x-data-grid";
 // Dialog Confirm and Notification
 import DialogConfirm from "../../../dialog/dialogconfirm";
 import useAuth from "../../../../utils/useAuth";
@@ -182,68 +180,16 @@ function DataGridSearch(){
     setOpenDialog(true)
   }
 
-  const clickViewArticles = (cellValues)=>{
+  const clickViewArticles = (event,cellValues)=>{
     const id_ = cellValues.row.id
     const company_ = cellValues.row.company
     navigate(`/dashboart/list-articles/${id_}/${company_}`)
   }
 
-  const clickViewLogArticles = (cellValues)=>{
+  const clickViewLogArticles = (event,cellValues)=>{
     const id_ = cellValues.row.id
     navigate(`/dashboart/search-log/${id_}`)
   }
-
-  const optionsButtons = (cellValues) => {
-    return (
-      <>
-      <Tooltip
-          title="Go Articles"
-          onClick={() => {
-            clickViewArticles(cellValues);
-          }}
-        >
-          <IconButton aria-label="view article" color="primary">
-            <VisibilityOutlinedIcon />
-          </IconButton>
-      </Tooltip>
-      <Tooltip
-        title="Go search logs"
-        onClick={() => {
-          clickViewLogArticles(cellValues);
-        }}
-      >
-          <IconButton aria-label="view article" color="success">
-            <SummarizeOutlinedIcon />
-          </IconButton>
-      </Tooltip>
-      <Tooltip
-        title="Edit"
-        onClick={(event) => {
-          clickEdit(event, cellValues);
-        }}
-      >
-        <IconButton
-          style={{ marginRight: "2px" }}
-          aria-label="edit"
-          color="warning"
-        >
-          <ModeEditOutlineOutlinedIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip
-        title="Delete"
-        onClick={(event) => {
-          clickDelete(event, cellValues);
-        }}
-      >
-        <IconButton aria-label="delete" color="error">
-          <DeleteOutlinedIcon />
-        </IconButton>
-      </Tooltip>
-      
-      </>
-    );
-  };
 
 
   const rows = data.map((obj) => ({
@@ -263,7 +209,12 @@ function DataGridSearch(){
     { field: "mont_page", headerName: "Mont Page",width:70,description:"Mont page in paginator",flex:1 },
     { field: "create_date", headerName: "Date created",minWidth: 200 },
     { field: "description", headerName: "Description", flex:1 },
-    { field: "options", headerName: "Options", flex:1, renderCell: optionsButtons, disableClickEventBubbling: true,},
+    { field: "actions",type: "actions", headerName: "Options", minWidth: 100, getActions: (params)=>[
+      <GridActionsCellItem style={{color: "#1976d2", paddingTop:'0px',paddingBottom:'0px'}} icon={<VisibilityOutlinedIcon color='primary'/>} label="View Result" onClick={(event)=>clickViewArticles(event,params)} showInMenu/>,
+      <GridActionsCellItem style={{color:'#2e7d32', paddingTop:'0px',paddingBottom:'0px'}} icon={<SummarizeOutlinedIcon color='success'/>} label="View Log" onClick={(event)=>clickViewLogArticles(event,params)} showInMenu/>,
+      <GridActionsCellItem style={{color:'#ed6c02', paddingTop:'0px',paddingBottom:'0px'}} icon={<ModeEditOutlineOutlinedIcon color='warning'/>} label="Edit" onClick={(event)=>clickEdit(event,params)} showInMenu/>,
+      <GridActionsCellItem style={{color:'#d32f2f', paddingTop:'0px',paddingBottom:'0px'}} icon={<DeleteOutlinedIcon color='error'/>} label="Delete" onClick={(event)=>clickDelete(event,params)} showInMenu/>,
+      ],felx:1},
   ];
 
   return (

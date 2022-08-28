@@ -2,18 +2,16 @@ import { useState, useEffect } from "react";
 import {useParams} from 'react-router-dom'
 import axios from 'axios'
 import Tooltip from "@mui/material/Tooltip";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import CheckedComponent from '../../../checked/checkedComponent'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import Rating from '@mui/material/Rating';
+import DeleteIcon from '@mui/icons-material/Delete';
 import DialogConfirm from '../../../dialog/dialogconfirm'
 import NotificationSnackBars from '../../../notification/Notification'
+import { DataGrid, GridToolbarContainer, GridToolbarExport,GridActionsCellItem} from "@mui/x-data-grid";
 
-import IconButton from "@mui/material/IconButton";
-
-import { DataGrid, GridToolbarContainer, GridToolbarExport} from "@mui/x-data-grid";
 import useAuth from "../../../../utils/useAuth";
 
 function CustomToolbar() {
@@ -96,7 +94,7 @@ const DataGridArticles = ()=>{
 
   }
 
-  const deleteArticle= (cellValues) =>{
+  const deleteArticle= (event,cellValues) =>{
     setTextDialog(prev=>({...prev,title:"Delete Article", content:`You are sure delete '${cellValues.row.product}'?`}))
     setIdDelete(cellValues.row.id)
     setOpenDialog(true)
@@ -127,7 +125,7 @@ const DataGridArticles = ()=>{
     return validateChecked
   }
     
-  const clickViewArticles = (cellValues)=>{
+  const clickViewArticles = (event,cellValues)=>{
     const {url_product} = cellValues.row;
     window.open(url_product, '_blank', 'noopener,noreferrer');
   }
@@ -143,32 +141,15 @@ const DataGridArticles = ()=>{
     )
   }
 
-    const ratingRow = (cellValues)=>{
-      let value = String(cellValues.row.rate).slice(0,3)
-      return (
-          <Tooltip title={`Rate ${cellValues.row.rate}`}>
-            <Rating readOnly name="rating" value={parseInt(value)} />
-          </Tooltip>
-      );
-    }
-
-  const optionsButtons = (cellValues) => {
+  const ratingRow = (cellValues)=>{
+    let value = String(cellValues.row.rate).slice(0,3)
     return (
-      <>
-        <Tooltip title={`Go Articles ${company}`} onClick={() => clickViewArticles(cellValues)}>
-          <IconButton aria-label='view article' color="primary">
-            <InsertLinkOutlinedIcon />
-          </IconButton>
+        <Tooltip title={`Rate ${cellValues.row.rate}`}>
+          <Rating readOnly name="rating" value={parseInt(value)} />
         </Tooltip>
-        <Tooltip title="Delete" onClick={()=> deleteArticle(cellValues)}>
-          <IconButton aria-label="delete" color="error">
-            <DeleteOutlinedIcon />
-          </IconButton>
-        </Tooltip>
-
-      </>
     );
-  };
+  }
+
 
   const rows = data.map((obj) =>({
     id: obj.id,
@@ -193,7 +174,11 @@ const DataGridArticles = ()=>{
     { field: "rate", type:'number',headerName: "Rating", description:"Rate Product",minWidth: 100,renderCell: ratingRow,flex:1 },
     { field: "create_date", type:"dateTime",headerName: "Date created", width: 100,flex:1 },
     { field: "favorite", type:'number',headerName: "Favorite", description:"Select your favorite article", renderCell:columnsFavorite,minWidth: 50 ,flex:1},
-    { field: "options", headerName: "Options", minWidth: 100, renderCell: optionsButtons, disableClickEventBubbling: true,felx:1},
+    // { field: "options", headerName: "Options", minWidth: 100, renderCell: optionsButtons, disableClickEventBubbling: true,felx:1},
+    { field: "actions",type: "actions", headerName: "Options", minWidth: 100, getActions: (params)=>[
+      <GridActionsCellItem style={{color: "#1976d2", paddingTop:'0px',paddingBottom:'0px'}} icon={<InsertLinkOutlinedIcon color='primary'/>} label="Link Article" onClick={(event)=>clickViewArticles(event,params)} showInMenu/>,
+      <GridActionsCellItem style={{color:'red', paddingTop:'0px',paddingBottom:'0px'}} icon={<DeleteIcon color='error'/>} label="Delete" onClick={(event)=>deleteArticle(event,params)} showInMenu/>,
+      ],felx:1},
   ];
 
 
