@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  app-django:
+    image: python:3.9-alpine3.13
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/app-django:/app-django
+    command: >
+      sh -c "python3 /app-django/manage.py migrate &&
+             python3 /app-django/manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - ./backend/.env
+    networks:
+      - myred
+    depends_on:
+      - db
+
+  db:
+    image: postgres:10-alpine
+    env_file:
+      - ./.env.dev
+    volumes: 
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - myred
+  redis:
+    image: redis:alpine
+    networks:
+      - myred
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A app-django worker -l info
+    volumes:
+      - ./data/celery:/app-django
+    env_file:
+      - ./.env.dev
+    networks:
+      - myred
+    depends_on:
+      - db
+      - redis
+      - app-django
+volumes:
+  pgdata:
+
+
+networks:
+  myred:
