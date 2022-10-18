@@ -53,7 +53,7 @@ function TabsUsers(){
           <Tabs value={value} onChange={handleChange}>
             <Tab label="All" {...a11yProps(0)} iconPosition="start" />
             <Tab label="Active" {...a11yProps(1)} iconPosition="start" />
-            <Tab label="Delete" {...a11yProps(2)} iconPosition="start" />
+            <Tab label="Banned" {...a11yProps(2)} iconPosition="start" />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0} style={{padding:'0px 10px', marginTop:"8px"}}>

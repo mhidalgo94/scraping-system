@@ -36,7 +36,7 @@ function SideLeftBar() {
             <ListItems text='Home' to='/dashboart/home' icons={<HomeOutlinedIcon/>} />
             <ListItems text='Search' to='/dashboart/search' icons={<ScreenSearchDesktopOutlinedIcon/>} />
             <ListItems text='Search Log' to='/dashboart/search-log' icons={<SummarizeOutlinedIcon/>} />
-            <ListItems text='Articles Search' to='/dashboart/search-articles' icons={<Inventory2OutlinedIcon/>} />
+            <ListItems text='Start Search' to='/dashboart/start-search' icons={<Inventory2OutlinedIcon/>} />
             {user.mang && (
               <ListItems text='Users' to='/dashboart/user' icons={<PeopleAltOutlinedIcon />} />
 

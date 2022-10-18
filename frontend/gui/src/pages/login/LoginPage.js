@@ -42,7 +42,7 @@ export default function LoginPage() {
       } else{
         setLoading(false);
         setDisabled(false);
-        let text =res?.statusText || "Please try again later or your connection"
+        let text =res?.statusText || "Please try again later or verify your connection"
         setNotificacion((prev)=>({open: true, text, severity: "error"}));
       }
       

@@ -75,7 +75,7 @@ function PanelUserEdit(){
     
 
   return (
-    <PanelPage loading={loadingContent} title={`Articles  ${userId.toString().toUpperCase()}`} >
+    <PanelPage loading={loadingContent} title={`Edit profile: ${userId.toString().toUpperCase()}`} >
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2} style={{padding:'10px', margin:"auto"}} >
               <Grid item xs={5}>

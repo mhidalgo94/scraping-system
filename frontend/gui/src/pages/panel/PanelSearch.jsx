@@ -9,7 +9,7 @@ const BtnTitle =()=>{
   const navigate = useNavigate();
   return (
     <div>
-      <Button startIcon={<AddOutlinedIcon />} onClick={()=>navigate('/dashboart/search-articles')}id="btn-success">New Search</Button>
+      <Button startIcon={<AddOutlinedIcon />} onClick={()=>navigate('/dashboart/start-search')}id="btn-success">New</Button>
     </div>
   )
 }

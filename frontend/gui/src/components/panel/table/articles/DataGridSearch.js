@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 // Icons
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import { DataGrid, GridToolbarContainer, GridToolbarExport,GridActionsCellItem} from "@mui/x-data-grid";
 // Dialog Confirm and Notification
@@ -210,7 +210,7 @@ function DataGridSearch(){
     { field: "create_date", headerName: "Date created",minWidth: 200 },
     { field: "description", headerName: "Description", flex:1 },
     { field: "actions",type: "actions", headerName: "Options", minWidth: 100, getActions: (params)=>[
-      <GridActionsCellItem style={{color: "#1976d2", paddingTop:'0px',paddingBottom:'0px'}} icon={<VisibilityOutlinedIcon color='primary'/>} label="View Result" onClick={(event)=>clickViewArticles(event,params)} showInMenu/>,
+      <GridActionsCellItem style={{color: "#1976d2", paddingTop:'0px',paddingBottom:'0px'}} icon={<OpenInBrowserIcon color='primary'/>} label="View Result" onClick={(event)=>clickViewArticles(event,params)} />,
       <GridActionsCellItem style={{color:'#2e7d32', paddingTop:'0px',paddingBottom:'0px'}} icon={<SummarizeOutlinedIcon color='success'/>} label="View Log" onClick={(event)=>clickViewLogArticles(event,params)} showInMenu/>,
       <GridActionsCellItem style={{color:'#ed6c02', paddingTop:'0px',paddingBottom:'0px'}} icon={<ModeEditOutlineOutlinedIcon color='warning'/>} label="Edit" onClick={(event)=>clickEdit(event,params)} showInMenu/>,
       <GridActionsCellItem style={{color:'#d32f2f', paddingTop:'0px',paddingBottom:'0px'}} icon={<DeleteOutlinedIcon color='error'/>} label="Delete" onClick={(event)=>clickDelete(event,params)} showInMenu/>,

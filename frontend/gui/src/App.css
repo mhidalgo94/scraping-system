@@ -1,9 +1,14 @@
+*{
+    margin:0;
+    padding:0;
+}
+
 .container{
     display: flex;
 }
 
 .content-container{
-    width:82%;
+    width:100%;
     overflow: auto;
     height: calc(100vh - 50px);
     padding-top: 23px;
@@ -27,6 +32,7 @@
     position: relative;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+    margin: 0 5px;
     outline: 0px;
     cursor: pointer;
     user-select: none;
@@ -44,10 +50,7 @@
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     color: rgb(255, 255, 255);
     background-color: rgb(0, 171, 85);
-    box-shadow: rgb(0 171 85 / 24%) 0px 8px 16px 0px;
-    font-weight: 700;
-    margin: 0 5px;
-    border-radius: 8px;
+    box-shadow: rgb(0 171 85 / 24%) 0px 8px 13px 0px;
 }
 
 #btn-success:hover{
@@ -59,6 +62,40 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0px;
+    margin: 0 5px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 2;
+    font-size: 0.875rem;
+    text-transform: capitalize;
+    font-family: "Public Sans", sans-serif;
+    min-width: 64px;
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 72, 66);
+    box-shadow: rgba(255, 72, 4, 0.24) 0px 8px 13px 0px;
+}
+
+#btn-error:hover{
+    background-color: rgb(183, 33, 54);
+}
+
+
+#btn-warning{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 0 5px;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
     outline: 0px;
@@ -77,14 +114,10 @@
     border-radius: 8px;
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     color: rgb(255, 255, 255);
-    background-color: rgb(255, 72, 66);
-    box-shadow: rgba(255, 72, 4, 0.24) 0px 8px 16px 0px;
-    font-weight: 700;
-    margin: 0 5px;
-    border-radius: 8px;
+    background-color: rgb(255, 143, 0);
+    box-shadow: rgba(255, 72, 4, 0.24) 0px 8px 13px 0px;
 }
-
-#btn-error:hover{
-    background-color: rgb(183, 33, 54);
+#btn-warning:hover{
+    background-color: rgb(245, 124, 0);
 }
 

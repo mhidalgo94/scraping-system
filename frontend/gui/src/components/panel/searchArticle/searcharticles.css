@@ -1,16 +1,16 @@
 
-.head-search-articles{
+.head-search{
     width: 100%;
     margin:10px 0;
 }
 
-.title-search-articles{
+.title-search{
     margin: 0px 0px 24px;
     font-weight: 700;
     line-height: 1.55556;
     font-size: 1.0625rem;
     font-family: "Public Sans", sans-serif;
-    color: rgb(145, 158, 171);
+    color: rgb(133, 141, 150);
     font-size: 1.125rem;
 }
 
@@ -20,4 +20,32 @@
     flex-wrap: wrap;
     flex-direction: row;
     gap: 12px;
+}
+
+.result-search{
+    margin: 0px;
+    font-weight: 700;
+    line-height: 1.55556;
+    font-size: 1.0625rem;
+    font-family: "Public Sans", sans-serif;
+    color: rgb(108, 140, 170);
+    font-size: 1rem;
+}
+#title-result{
+    margin: 5px 10px;
+    font-weight: 700;
+    line-height: 1.55556;
+    font-size: 1.0625rem;
+    font-family: "Public Sans", sans-serif;
+    color: #1976d2;
+    font-size: 0.9rem;
+}
+#desc-result{
+    margin: 5px 10px;
+    font-weight: 700;
+    line-height: 1.55556;
+    font-size: 1.0625rem;
+    font-family: "Public Sans", sans-serif;
+    color: #1976d2;
+    font-size: 0.9rem;
 }
