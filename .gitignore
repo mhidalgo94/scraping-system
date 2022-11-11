@@ -145,6 +145,12 @@ yarn-error.log*
 backend/config/.db.sqlite3
 backend/core/accounts/migrations/*
 
-
 .vscode
-terminar.txt
+./terminar.txt
+
+
+# docker
+data/
+.dockerignore
+.env.dev
+backend/config/.db.sqlite3

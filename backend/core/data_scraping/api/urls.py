@@ -5,10 +5,19 @@ from .views_ebay import EbayListAPI, EbayDestroyAPI, EbayUpdateAPI,EbayListSearc
 from .views_search import SearchUserDestroyAPI, SearchUserListAPI, SearchUserUpdateAPI, ArticlesBySearchRetrieveAPI
 from .views_log import LogRequestListAPI, LogRequestDestroyAPI, LogRequestUpdateAPI, LogRequestSearchRetrieveAPI
 
+from .start_scraping_view import ScrapingApiView,ScheduleScrapingApiView, RevokeTaskApiView,TaskScheduledPendingApiView
+
 from rest_framework_simplejwt.views import TokenRefreshView
 from core.accounts.api.views_user import TokenObtainViewAPI
 
+
+
 urlpatterns =[
+    # Start Scraping Web 
+    path('search/', ScrapingApiView.as_view(), name='start-scraping'),
+    path('search-schedule/', ScheduleScrapingApiView.as_view(), name='start-schedule-scraping'),
+    path('revoke-task/', RevokeTaskApiView.as_view(), name='revoke-scheduled-task'),
+    path('scheduled-task-list/', TaskScheduledPendingApiView.as_view(), name='scheduled-task-user'),
     # Amazon Model API
     path('list/amazon/', AmazonListAPI.as_view(), name='amazon-list'),
     path('list/amazon/search/<int:id>/', AmazonListSearchAPI.as_view(), name='amazon-list-search'),

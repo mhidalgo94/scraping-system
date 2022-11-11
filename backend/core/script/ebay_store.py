@@ -1,9 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-from pprint import pprint
 
-from core.data_scraping.models import EbayModel, SearchUserModel, LogRequestModel
+from core.data_scraping.models import EbayModel, LogRequestModel
 
 class EbayWebScraping:
     URL_BASE = 'https://www.ebay.com'
@@ -52,22 +51,23 @@ class EbayWebScraping:
 
 
     def scraping_context(self,response,url_page,page):
-        
         doc = BeautifulSoup(response.text, 'lxml')
 
-        div_search = doc.find(id="srp-river-results")
-        ul_items = div_search.find("ul") 
-        li_items = ul_items.find_all("li")[1:-3]
+        # tengo que revisar porque no encuentra los valores de ul ni li en este html parse
+        div_search = doc.find(id='srp-river-results')
+        # div_search = doc.find('div', {'class': 'srp-river-results'}).find('ul')
+        # ul_items = div_search.find("ul")
+        # ul_items = div_search.find(class_='srp-results')
+        li_items = div_search.find_all("li")[1:-3]
 
         for item in li_items:
             data = {}
-            h3_title = item.find('h3')
+            h3_title = item.find(class_='s-item__title')
             url_product = item.find(class_="s-item__link")
             img_url = item.find(class_='s-item__image-img')
             price = item.find(class_='s-item__price')
             rate = item.find(class_='x-star-rating')
             top_rated = item.find(class_="s-item__etrs-text")
-
             if h3_title and img_url and price and url_product:
                 data['title'] = h3_title.text
                 data['url_article'] = url_product['href']
@@ -100,15 +100,13 @@ class EbayWebScraping:
                 data['url_page'] = url_page
                 date = datetime.strptime(response.headers['Date'],'%a, %d %b %Y %H:%M:%S GMT')
                 data['date_request']  = date
-            
 
                 self.all_product.append(data)
 
         
-def ejecut_scraping_Ebay(search, page, company,user):
-    scraping = EbayWebScraping(search, page).run()
+def ejecut_scraping_Ebay(search, page):
+    scraping = EbayWebScraping(search.search_title, page).run()
     bulk_list_registro = list()
-    search = SearchUserModel.objects.create(search_title=search, mont_page=page, user=user,company=company)
     for obj in scraping:
         LogRequestModel.objects.get_or_create(
             search_request=search,
@@ -123,7 +121,6 @@ def ejecut_scraping_Ebay(search, page, company,user):
         else:
             rate = ""
 
-
         registro = EbayModel(
             search=search,
             page=obj['page'],
@@ -137,5 +134,6 @@ def ejecut_scraping_Ebay(search, page, company,user):
         bulk_list_registro.append(registro)
 
     EbayModel.objects.bulk_create(bulk_list_registro)
+    return search
 
 

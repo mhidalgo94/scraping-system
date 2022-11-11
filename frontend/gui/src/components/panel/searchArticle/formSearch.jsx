@@ -1,37 +1,52 @@
 import { useState } from 'react';
-import {Link} from 'react-router-dom'
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Container from '@mui/material/Container';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
+import useAuth from "../../../utils/useAuth";
+import { blue } from "@mui/material/colors";
+import {Box, Button,Container,Grid,TextField, Select,MenuItem } from '@mui/material';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import NotStartedOutlinedIcon from '@mui/icons-material/NotStartedOutlined';
-
-
-
+import CircularProgress from "@mui/material/CircularProgress";
+import useStyles from './style';
 import './searcharticles.css'
 
-function SearchArticle(){
+function SearchArticle({setNotification}){
+    const classes = useStyles()
+    // const navigate = useNavigate()
     const [company, setCompany] = useState('ebay')
+    const {logoutUser} = useAuth()
     const allCompany = ['ebay','amazon']
     const [recentSearch, setRecentSearch] = useState([])
-
-
+    const [loadingSearch, setLoadingSearch] = useState(false)
     const handleSubmit = (e)=>{
         e.preventDefault();
-        console.log(e);
+        setLoadingSearch(true);
         const form = new FormData(e.target);
         const inputValue = Object.fromEntries(form);
-        setRecentSearch([...recentSearch,inputValue])
-        e.target.reset();
+        const body_ = inputValue;
+        const url = `${process.env.REACT_APP_API_URL_BASE}/api/search/`;
+        const headers = {
+            'Content-type':'application/json',
+            'Authorization': "Bearer " + JSON.parse(localStorage.getItem("authTokens", null))?.access,
+        }
+        axios.post(url,body_,{headers}).then(res=>{
+            let {id,search_title,description,company}  = res.data.result;
+            setRecentSearch([...recentSearch,{id,search_title, description, company}]);
+            e.target.reset();
+            setLoadingSearch(false);
+            setNotification(prev=>({...prev,open:true,text:'Task completed successfully.'}));
+        }).catch(err => {
+            if (err?.response.statusText==='Unauthorized'){
+                logoutUser()
+            }
+            setNotification(prev=>({...prev,open:true,text:err.response.data.detail || err.message,severity:"error"}));
+            setLoadingSearch(false);
+        })
     }
 
     return (
         <Container fixed>
-            <Box component="form" sx={{m:1}}  noValidate onSubmit={handleSubmit}>
+            <Box component="form" sx={{m:1}}  onSubmit={handleSubmit}>
                 <div className="head-search">
                     <h4 className="title-search">Create Search:</h4>
                 </div>
@@ -42,10 +57,8 @@ function SearchArticle(){
                         <Grid item xs={3}>
                             <TextField required fullWidth label="Description" name="description" size="small" />
                         </Grid>
-                        <Grid item xs={1}>
-                            <TextField required fullWidth label="Amount page" name="mount_page" type="number" defaultValue={1} inputProps={{ min:1, max:10 }}
-                                size="small" 
-                                />
+                        <Grid item xs={2}>
+                            <TextField required fullWidth label="Amount page" name="mount_page" type="number" defaultValue={1} inputProps={{ min:1, max:10 }} size="small" />
                         </Grid>
                         <Grid item xs={2}>
                             <Select required size="small" fullWidth value={company} label="Service company" name="company" onChange={(e)=>setCompany(e.target.value)} style={{minWidth:"60px"}}>
@@ -55,7 +68,15 @@ function SearchArticle(){
                             </Select>
                         </Grid>
                         <Grid item xs={2}>
-                            <Button id="btn-success" type="submit" fullWidth startIcon={<NotStartedOutlinedIcon />}>Search</Button>
+                            <Button variant="contained" style={{fontFamily: "Public Sans, sans-serif"}} className={classes.btnCreate} disabled={loadingSearch} type="submit" fullWidth startIcon={
+                            !loadingSearch ? <NotStartedOutlinedIcon /> : (
+                                <CircularProgress
+                                size={24}
+                                sx={{color: blue[500]}}
+                                />
+                            )
+                            }>Search
+                            </Button>
                         </Grid>
                 </Grid>
 
@@ -70,7 +91,7 @@ function SearchArticle(){
                                 <div style={{display:"flex",alignItems:'center'}}>
                                     <span id="title-result">{obj.search_title}:</span>
                                     <span id="desc-result">{obj.description} - {obj.company}</span>
-                                    <Link to="#"><OpenInBrowserIcon color="primary" fontSize="small" /></Link>
+                                    <Link to={`/dashboart/list-articles/${obj.id}/${obj.company}`}><OpenInBrowserIcon color="primary" fontSize="small" /></Link>
                                 </div>
                             </li>
                         )

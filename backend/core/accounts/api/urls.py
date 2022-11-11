@@ -8,6 +8,7 @@ from .views_user import (
 )
 
 
+
 urlpatterns = [
     path('sign-up/', SignUpApiView.as_view(), name="register"),
     path('verify-code/', VerifyCodeAPiVew.as_view(), name="verify-code"),

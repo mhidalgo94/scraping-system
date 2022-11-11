@@ -14,7 +14,7 @@ class TokenObtainSerializer(TokenObtainPairSerializer):
         token['lastname'] = user.lastname
         if user.img:
             token['image'] = f'{settings.MEDIA_URL}{str(user.img)}'
-        token['mang'] = user.is_superuser
+        token['mang'] = user.is_admin
         return token
 
 

@@ -7,6 +7,8 @@ from django.db.models.signals import post_save
 from django.core.mail import send_mail
 from django.conf import settings
 
+COMPANY = settings.COMPANY_TO_MODEL
+
 # Create your models here.
 class UserManager(BaseUserManager):
 
@@ -35,14 +37,15 @@ class UserManager(BaseUserManager):
         return user
 
     
-    def create_superuser(self,email,user_name, password):
+    def create_superuser(self,email,user_name,firstname, lastname, password):
 
         user = self.create_user(
-            email, user_name,password=password
+            email, user_name,firstname, lastname,password
         )
         user.is_superuser = True
         user.staff = True
         user.admin = True
+        user.is_active = True
         user.save(using=self._db)
         return user
 
@@ -65,8 +68,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     # Overwrite objects
     objects =  UserManager()
     USERNAME_FIELD = 'user_name'
+    REQUIRED_FIELDS  = ['email', 'firstname', 'lastname']
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS  = ['email']
 
     def upload_to_image(self):
         return f'{self.user_name}/'
@@ -98,7 +101,21 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 @receiver(post_save, sender=User)
 def post_create_verify_user(sender,instance,created,**kwargs):
-    if created:
-        message = f'Hola {instance.get_full_name()}.\nUsted a creado una cuenta en nuestro systema.\nPara verificar su cuenta utilice este codigo:{instance.id_verify}'
+    if created and instance.is_admin==False:
+        message = f'Hi {instance.get_full_name()}.\Y have created an account in our system.\nTo verify your account use this code:{instance.id_verify}'
         send_mail('Registro de Cuenta.', message, settings.EMAIL_HOST_USER,[instance.email])
 
+
+
+class NotificationModel(models.Model):
+    company = models.CharField(verbose_name="Company",max_length=15)
+    recipient = models.ManyToManyField(User)
+    message = models.TextField(verbose_name="Message")
+    read = models.BooleanField(verbose_name="Read",default=False)
+    status = models.CharField(verbose_name="Status",max_length=15)
+    recieved_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Notification"
+        verbose_name_plural = "Notifications"
+        db_table = "Notification"

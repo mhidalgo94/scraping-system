@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import os
-
+from decouple import config
+from .db import DB_SQLITE, DB_POSTGRES
+from datetime import timezone
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-itx@vmf6qhc8ri95fr1*lltffg8kufyhco2nkj4pmj^=10lhhr' #os.environ.get('SECRET_KEY', None) #'django-insecure-itx@vmf6qhc8ri95fr1*lltffg8kufyhco2nkj4pmj^=10lhhr' 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = str(os.environ.get('DEBUG')) == '1'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -47,6 +49,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     # Authentication
     'rest_auth',
+    # App Celery
+    'django_celery_beat',
+    'django_celery_results',
     # App for Scraping web
     'core.data_scraping',
     # App for accounts
@@ -91,12 +96,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'config' / '.db.sqlite3',
-    }
-}
+DATABASES = DB_SQLITE #DB_POSTGRES #DB_SQLITE #  
 
 
 # Password validation
@@ -148,6 +148,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+COMPANY_TO_SCRAPING = ['ebay','amazon']
+COMPANY_TO_MODEL = [
+        ('amazon','amazon'),
+        ('ebay','ebay'),
+    ]
+
+
 # DEFAULT USER MODEL
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -190,6 +197,9 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+# Min time fot schedule task
+TASK_MIN_TIME_SCHEDULE = timedelta(hours=1)
+
 
 
 # Config for send email
@@ -201,3 +211,18 @@ EMAIL_USE_TLS = str(os.environ.get('EMAIL_USE_TLS')) == '1' # True if equal 1
 # EMAIL_USE_SSL= str(os.environ.get('EMAIL_USE_SSL')) == '1' # True if equal 1
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+
+# CONFIG CELERY
+CELERY_TIMEZONE = 'America/Chicago'
+CELERY_TASK_ALWAYS_EAGER=False
+CELERY_BROKER_REDIS_URL='redis://localhost:6379/0'
+# # save Celery task results in Django's database
+CELERY_RESULT_BACKEND ='redis://localhost:6379/0' #'django-db'
+CELERY_RESULT_BACKEND ='django-db'
+# CELERY_RESULT_EXTENDED = True
+# CELERY_STATE_DB = True
+# # This configures Redis as the datastore between Django + Celery
+CELERY_BROKER_URL = config('CELERY_BROKER_REDIS_URL', default='redis://localhost:6379')
+# # this allows you to schedule items in the Django admin.
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'

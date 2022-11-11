@@ -1,33 +1,30 @@
+Prioridad 
+Arrglar UI, terminar 
+Incluir una tabla con todas las tareas
+Incluir las notificaiones en los signal
 
-hacer la vista de buscar arrticulos 
+TERMINAR VENTANA NOTIFICACIONES
+- Make loadin when start fetch api
+- Terminar backend para limpiar las notificaciones
 
+CREAR MENU SOBRE CONFIGURACIONES
+- settings sistem, logout  (terminar)
+- make setting endpoint
+- make workin menu settings
+
+# Add button View Table
+
+- Crear button para actualizar lista task schedule.
+- Vsita donde esta registro tareas programadas PENDIN SUCCESS AND FAILED
+
+
+
+# BACKEND
 * crear un programador de scraping cn celery
 
-crear las notificaiones
-craer vetnana de configuracion
-
-
-
-la opcion de botones cambiar a darle click para que salgan las opciones esto en en las tablas DataGrid
-
+crear las notificaiones model and viewAPI
 
 
 
 Tienes que detener el scraping de amazon. Buscar otros mercados con api para afiliados
 
-terminar las api de 
-busquedas, amazon y ebay 
-    listas 
-    los retriview
-    delete de busquedas a false
-
-
-
-
-
-
-* Para este necesita un modelo para salvar el archivo en caso de almacenamiento
-
-* montar el proyecto en postgresql con docker
-
-* Me quede en la parte de buscar api red de afiliados.

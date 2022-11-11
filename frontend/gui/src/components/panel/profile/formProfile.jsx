@@ -52,79 +52,79 @@ function FormUser({firstname, lastname, user_name,email, last_login, date_update
 
     return (
 
-        <Container maxWidth="sm" className="container-form" style={{height: "100%"}}>
-            <Box autoComplete="off" sx={{paddingLeft:"0px",width: '70ch',maring:"0 8px"}}>
-                <div style={{width:"100%",padding:"5px"}}>
-                    <TextField type="text" onChange={handleChange} name="firstname" value={firstname} label="First Name" color="success"  fullWidth placeholder="Input first name." size="small"/>
+        <Container maxWidth="sm"  className="container-form" style={{height: "100%"}}>
+                <Box autoComplete="off" sx={{paddingLeft:"0px",width: '70ch',maring:"0 8px"}}>
+                    <div style={{width:"100%",padding:"5px"}}>
+                        <TextField type="text" onChange={handleChange} required name="firstname" value={firstname} label="First Name" color="success"  fullWidth placeholder="Input first name." size="small"/>
+                    </div>
+                    <div style={{width:"100%",padding:"5px"}}>
+                        <TextField type="text" onChange={handleChange} required name="lastname" value={lastname} label="Last Name" color="success"  fullWidth placeholder="Input last name." size="small" />
+                    </div>
+                    <div style={{width:"100%",padding:"5px"}}>
+                        <TextField type="text" onChange={handleChange} required name="user_name" value={user_name} label="Username" color="success"  fullWidth placeholder="Input username." size="small" />
+                    </div>
+                    <div style={{width:"100%",padding:"5px"}}>
+                        <TextField  label="Email" onChange={handleChange} required name="email" value={email} type="email" color="success" fullWidth placeholder="Input your email." size="small"/>
+                    </div>
+                    <div style={{width:"100%",padding:"5px"}}>
+                        <TextField  label="Password" onChange={handleChange} name="password" type="password" color="success" fullWidth placeholder="Input password. " size="small"/>
+                    </div>
+                </Box>
+                <div className="container-info-user">
+                    <div className="container-info-items">
+                        <h4>Last Login</h4>
+                        <p>{last_login}</p>
+                    </div>
+                    <div className="container-info-items">
+                        <h4>Last Update</h4>
+                        <p>{date_update}</p>
+                    </div>
                 </div>
-                <div style={{width:"100%",padding:"5px"}}>
-                    <TextField type="text" onChange={handleChange} name="lastname" value={lastname} label="Last Name" color="success"  fullWidth placeholder="Input last name." size="small" />
-                </div>
-                <div style={{width:"100%",padding:"5px"}}>
-                    <TextField type="text" onChange={handleChange} name="user_name" value={user_name} label="Username" color="success"  fullWidth placeholder="Input username." size="small" />
-                </div>
-                <div style={{width:"100%",padding:"5px"}}>
-                    <TextField  label="Email" onChange={handleChange} name="email" value={email} type="email" color="success" fullWidth placeholder="Input your email." size="small"/>
-                </div>
-                <div style={{width:"100%",padding:"5px"}}>
-                    <TextField  label="Password" onChange={handleChange} name="password" type="password" color="success" fullWidth placeholder="Input password. " size="small"/>
-                </div>
-            </Box>
-            <div className="container-info-user">
-                <div className="container-info-items">
-                    <h4>Last Login</h4>
-                    <p>{last_login}</p>
-                </div>
-                <div className="container-info-items">
-                    <h4>Last Update</h4>
-                    <p>{date_update}</p>
-                </div>
-            </div>
-            <div className="container-footer-user">
-                {user.mang && (
-                    
-                    <Button variant="contained" disabled={loading} id="btn-error" onClick={handleDeleteUser}>Delete
+                <div className="container-footer-user">
+                    {user.mang && (
+                        
+                        <Button variant="contained" disabled={loading} id="btn-error" onClick={handleDeleteUser}>Delete
+                        {loading && (
+                            <CircularProgress
+                            size={24}
+                            sx={{
+                                color: blue[500],
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                marginTop: "-12px",
+                                marginLeft: "-12px",
+                            }}
+                            />
+                        )}
+                        </Button>
+                    )}
+                    <Button id="btn-success" disabled={loading} variant="contained" type="submit">Save Change
                     {loading && (
-                        <CircularProgress
-                        size={24}
-                        sx={{
-                            color: blue[500],
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            marginTop: "-12px",
-                            marginLeft: "-12px",
-                        }}
-                        />
-                    )}
+                            <CircularProgress
+                            size={24}
+                            sx={{
+                                color: blue[500],
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                marginTop: "-12px",
+                                marginLeft: "-12px",
+                            }}
+                            />
+                        )}
                     </Button>
-                )}
-                <Button id="btn-success" disabled={loading} variant="contained" type="submit">Save Change
-                {loading && (
-                        <CircularProgress
-                        size={24}
-                        sx={{
-                            color: blue[500],
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            marginTop: "-12px",
-                            marginLeft: "-12px",
-                        }}
-                        />
-                    )}
-                </Button>
-                <DialogConfirm
-                    fullWidth={true}
-                    maxWidth='sm'
-                    open={openDialog}
-                    setOpen={setOpenDialog}
-                    onAcept={onAcept}
-                    title={textDialog.title}
-                    content={textDialog.content}
-                    loadingAcept={loadingAcept}
-                />
-            </div>
+                    <DialogConfirm
+                        fullWidth={true}
+                        maxWidth='sm'
+                        open={openDialog}
+                        setOpen={setOpenDialog}
+                        onAcept={onAcept}
+                        title={textDialog.title}
+                        content={textDialog.content}
+                        loadingAcept={loadingAcept}
+                    />
+                </div>
 
       </Container>
         

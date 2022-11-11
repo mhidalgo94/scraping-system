@@ -21,6 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('core.data_scraping.urls')),
+
     # API
     path('api/', include('core.data_scraping.api.urls')),
     path('api/user/', include('core.accounts.api.urls')),

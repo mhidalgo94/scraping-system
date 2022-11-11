@@ -3,16 +3,24 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.contrib.auth import get_user_model
+from django.conf import settings
+
 
 
 User = get_user_model()
-
+TASK_STATUS = (
+    ('SUCCESS','SUCCESS'),
+    ('FAILURE','FAILURE'),
+    ('REVOKED','REVOKED'),
+    ('STARTED','STARTED'),
+    ('RECEIVED','RECEIVED'),
+    ('REJECTED','REJECTED'),
+    ('RETRY','RETRY'),
+    ('PENDING','PENDING')
+)
+COMPANY = settings.COMPANY_TO_MODEL
 
 class SearchUserModel(models.Model):
-    COMPANY=[
-        ('amazon','amazon'),
-        ('ebay','ebay'),
-    ]
     user = models.ForeignKey(User,null=True,on_delete=models.CASCADE)
     search_title = models.CharField(verbose_name="Search title",max_length=255)
     mont_page = models.PositiveSmallIntegerField(verbose_name="Mont page",default =1)
@@ -22,11 +30,13 @@ class SearchUserModel(models.Model):
     company = models.CharField(max_length=15,choices=COMPANY,default='Amazon')
     delete= models.BooleanField(verbose_name="Delete", default=False)
     favorite = models.BooleanField(verbose_name="Favorite", default=False)
-
+    task_id = models.CharField(max_length=255,unique=True,verbose_name='Task ID', blank=True, null=True)
+    status_task = models.CharField(verbose_name="Status Task",max_length=20, choices=TASK_STATUS, default=None, blank=True,null=True)
+    scheduled_date = models.DateTimeField(verbose_name='Date scheduled', null=True, blank=True)
 
 
     def __str__(self):
-        return f'Search: {self.search_title}--Pages: {self.mont_page}--User: {self.user.user_name} Description:{self.description}'
+        return f'Search: {self.search_title}--Pages: {self.mont_page}--User: {self.user.user_name} Description:{self.description}--Status task: {self.status_task}'
 
     class Meta:
         verbose_name = "Search"

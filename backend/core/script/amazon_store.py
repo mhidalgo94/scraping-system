@@ -93,10 +93,10 @@ class AmazonWebScraping:
 
 
 
-def ejecut_scraping_Amazon(search, page,company, user):
+def ejecut_scraping_Amazon(search, page,company, user,task_id=None):
     scraping = AmazonWebScraping(search, page).run()
     bulk_list_registro = list()
-    search = SearchUserModel.objects.create(search_title=search, mont_page=page, user=user,company=company)
+    search = SearchUserModel.objects.create(search_title=search, mont_page=page, user=user,company=company,task_id=task_id)
     for obj in scraping:
         LogRequestModel.objects.get_or_create(
             search_request=search,
@@ -111,7 +111,6 @@ def ejecut_scraping_Amazon(search, page,company, user):
         else:
             rate = ""
 
-
         registro = AmazonModel(
             search=search,
             page=obj['page'],
@@ -124,5 +123,5 @@ def ejecut_scraping_Amazon(search, page,company, user):
         bulk_list_registro.append(registro)
 
     AmazonModel.objects.bulk_create(bulk_list_registro)
-
+    return search
 
