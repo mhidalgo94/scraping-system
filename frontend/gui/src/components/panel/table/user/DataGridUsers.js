@@ -8,17 +8,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import NotificationSnackBars from '../../../notification/Notification'
 import DialogConfirm from "../../../dialog/dialogconfirm";
-import { DataGrid, GridToolbarContainer, GridToolbarExport,GridActionsCellItem} from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridToolbar} from "@mui/x-data-grid";
 import useAuth from "../../../../utils/useAuth";
 import './griduser.css';
-
-function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarExport csvOptions={{fileName: 'Search'}}/>
-      </GridToolbarContainer>
-    );
-  }
 
 function RowImagenFullName(cellValues){
   const {firstname, lastname,img} = cellValues.row;
@@ -35,7 +27,8 @@ function RowImagenFullName(cellValues){
 
 function StatusRow(cellValues){
   const status = cellValues.row.status ? (
-  <Chip size="small"  label="Active" style={{backgroundColor:'rgba(84, 214, 44, 0.16)',color:'rgb(34, 154, 22)', fontSize:'0.9rem',fontWeight:'600'}} />)
+  <Chip size="small"  label="Active" style={{backgroundColor:'rgba(84, 214, 44, 0.16)',color:'rgb(34, 154, 22)', fontSize:'0.9rem',fontWeight:'600'}} />
+  )
    : 
    (<Chip size="small" label="Banned" color="error" style={{backgroundColor:'rgba(255, 72, 66, 0.16)',color:'rgb(183, 33, 54)', fontSize:'0.9rem',fontWeight:'600'}} />);
   return status
@@ -144,7 +137,7 @@ const DataGridUsers = ({status=null})=>{
             rows={rows}
             columns={columns}
             loading={loading}
-            components={{ Toolbar: CustomToolbar }}
+            components={{ Toolbar: GridToolbar }}
             pageSize={30}
             checkboxSelection
             disableSelectionOnClick

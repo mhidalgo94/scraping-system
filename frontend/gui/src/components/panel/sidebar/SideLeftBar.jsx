@@ -2,11 +2,11 @@ import React from "react";
 import "./sidebarleft.css";
 import ListItems from './ListItems'
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import ContentPasteSearchOutlinedIcon from '@mui/icons-material/ContentPasteSearchOutlined';
 import useAuth from '../../../utils/useAuth'
 
 
@@ -36,7 +36,10 @@ function SideLeftBar() {
             <ListItems text='Home' to='/dashboart/home' icons={<HomeOutlinedIcon/>} />
             <ListItems text='Search' to='/dashboart/search' icons={<ScreenSearchDesktopOutlinedIcon/>} />
             <ListItems text='Search Log' to='/dashboart/search-log' icons={<SummarizeOutlinedIcon/>} />
-            <ListItems text='Start Search' to='/dashboart/start-search' icons={<Inventory2OutlinedIcon/>} />
+            <ListItems text='Start Search' to='/dashboart/start-search' icons={<ContentPasteSearchOutlinedIcon/>} />
+          </ul>
+          {user.mang ?  <h4 className="sidebar-title">Admin User</h4> : undefined}
+          <ul className="sidebar-list" style={{padding:'0px'}}>
             {user.mang && (
               <ListItems text='Users' to='/dashboart/user' icons={<PeopleAltOutlinedIcon />} />
 

@@ -50,7 +50,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-
 def upload_to_image(instance, filename):
     return 'user/images/%s/%s' % (instance.user_name, filename)
 
@@ -108,11 +107,10 @@ def post_create_verify_user(sender,instance,created,**kwargs):
 
 
 class NotificationModel(models.Model):
-    company = models.CharField(verbose_name="Company",max_length=15)
-    recipient = models.ManyToManyField(User)
+    search = models.ForeignKey(to='data_scraping.SearchUserModel', verbose_name='Search',on_delete=models.SET_NULL,null=True, blank=True)
+    status = models.CharField(verbose_name='Status Task', max_length=50, null=True,blank=True)
     message = models.TextField(verbose_name="Message")
     read = models.BooleanField(verbose_name="Read",default=False)
-    status = models.CharField(verbose_name="Status",max_length=15)
     recieved_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:

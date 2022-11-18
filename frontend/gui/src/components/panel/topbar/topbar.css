@@ -18,10 +18,20 @@
  
 
 .topLeft .logo{
+    font-family: "Agustina Regular";
+    font-variant-ligatures: no-common-ligatures;
+    letter-spacing: -1px;
     font-weight: bold;
     font-size:30px;
-    color:darkblue;
+    color:#1976D2;
     cursor: pointer;
+}
+.logo span{
+    color:crimson;
+    font-family: "Agustina Regular";
+    font-variant-ligatures: no-common-ligatures;
+    letter-spacing: -1px;
+    font-weight: bold;
 }
 
 .topbarIcons{

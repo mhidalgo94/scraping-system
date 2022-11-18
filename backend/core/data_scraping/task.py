@@ -40,9 +40,7 @@ def schedule_scraping_task(self,**kwargs,):
 # Signal no work version 5.2.7, change to  4.2
 @task_success.connect#(sender='core.data_scraping.task.schedule_scraping_task')
 def task_send_success(sender=None, headers=None, body=None,**kwargs):
-    print('Se ejecuto el signal success')
-    print("Sender ->", sender.request)
-    id_search = sender.request.kwargs['id_search']
+    id_search = int(sender.request.kwargs['id_search'])
     search = SearchUserModel.objects.get(id=id_search)
     search.status_task = 'SUCCESS'
     search.save()
@@ -54,12 +52,4 @@ def task_send_failure(sender=None, headers=None, body=None,**kwargs):
     search.status_task = 'FAILURE'
     search.save()
 
-
-# @shared_task
-# def save_status_search(request):
-#     async_task = AsyncResult(request['task_id'])
-#     model = SearchUserModel.objects.get(id=request['id'])
-#     model.status_task = async_task.status
-#     model.save()
-#     return request
     

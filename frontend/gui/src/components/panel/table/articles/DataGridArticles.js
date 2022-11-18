@@ -10,17 +10,10 @@ import Rating from '@mui/material/Rating';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DialogConfirm from '../../../dialog/dialogconfirm'
 import NotificationSnackBars from '../../../notification/Notification'
-import { DataGrid, GridToolbarContainer, GridToolbarExport,GridActionsCellItem} from "@mui/x-data-grid";
+import { DataGrid,GridActionsCellItem, GridToolbar } from "@mui/x-data-grid";
 
 import useAuth from "../../../../utils/useAuth";
 
-function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarExport csvOptions={{fileName: 'Search'}}/>
-      </GridToolbarContainer>
-    );
-  }
 
 const DataGridArticles = ()=>{
 
@@ -168,7 +161,7 @@ const DataGridArticles = ()=>{
   
   let columns = [
     { field: "product", headerName: "Product", minWidth: 100,flex:1 },
-    { field: "price",type:'number', headerName: "Precio", minWidth: 50 ,flex:1},
+    { field: "price",type:'number', headerName: "Prece", minWidth: 50 ,flex:1},
     { field: "old_price",type:'number', headerName: "Old Price",description:"If is 0 not get ", minWidth: 50 ,flex:1},
     { field: "get_save",type:'number', headerName: "You Save",description:"How much do you save", minWidth: 50 ,flex:1},
     { field: "rate", type:'number',headerName: "Rating", description:"Rate Product",minWidth: 100,renderCell: ratingRow,flex:1 },
@@ -190,7 +183,7 @@ const DataGridArticles = ()=>{
             rows={rows}
             columns={columns}
             loading={loading}
-            components={{ Toolbar: CustomToolbar }}
+            components={{ Toolbar: GridToolbar }}
             pageSize={30}
             checkboxSelection
             disableSelectionOnClick

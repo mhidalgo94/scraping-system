@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {useParams} from 'react-router-dom'
-import { DataGrid, GridToolbarContainer, GridToolbarExport, } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from 'axios';
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import Tooltip from "@mui/material/Tooltip";
@@ -9,14 +9,6 @@ import IconButton from "@mui/material/IconButton";
 import useAuth from "../../../../utils/useAuth";
 import NotificationSnackBars from '../../../notification/Notification'
 
-
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <GridToolbarExport csvOptions={{fileName: 'SearchLog'}} />
-    </GridToolbarContainer>
-  );
-}
 
 const DataGridSearchLog = ()=>{
   const { logoutUser } = useAuth();
@@ -106,7 +98,7 @@ const DataGridSearchLog = ()=>{
           rows={rows}
           columns={columns}
           loading={loading}
-          components={{ Toolbar: CustomToolbar }}
+          components={{ Toolbar: GridToolbar }}
           pageSize={10}
           checkboxSelection
           disableSelectionOnClick

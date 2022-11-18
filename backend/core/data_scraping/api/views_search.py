@@ -13,7 +13,7 @@ class SearchUserListAPI(ListAPIView):
 
     def get_queryset(self,*args, **kwargs):
         obj = self.serializer_class.Meta.model
-        qs = obj.objects.filter(delete=False,user=self.request.user)
+        qs = obj.objects.filter(delete=False,user=self.request.user, status_task='SUCCESS').order_by('-id')
         return qs
 
 

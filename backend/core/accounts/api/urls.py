@@ -3,10 +3,10 @@ from .views_user import (
     SignUpApiView, VerifyCodeAPiVew, 
     ResendCodeVerificationAPI, VerifyUserName, 
     ChangePassowrdWithCode,UserListAPIView,
-    UserDestroyAPIView, UserRetrieveAPIView,
+    UserRetrieveAPIView,
     UserUpdateAPIView,UserDestroyEverAPIView
 )
-
+from .view_notification import NotificationListAPIView,NotificationsAllCheckedAPIView, NotificationUpdateAPIView
 
 
 urlpatterns = [
@@ -19,4 +19,8 @@ urlpatterns = [
     path('<str:user_name>/retrieve/',UserRetrieveAPIView.as_view(), name="user-retrieve"),
     path('<str:user_name>/update/',UserUpdateAPIView.as_view(), name="user-update"),
     path('<str:user_name>/destroy/', UserDestroyEverAPIView.as_view(), name='user-destroy'),
+    # Notifications 
+    path('notification/list/', NotificationListAPIView.as_view(),name='user-notification'),
+    path('notification/all-checked/', NotificationsAllCheckedAPIView.as_view(),name='checked-all-notifications'),
+    path('notification/<int:id>/update/', NotificationUpdateAPIView.as_view(),name='update-notifications'),
 ]

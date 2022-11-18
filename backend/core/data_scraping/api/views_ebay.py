@@ -72,3 +72,24 @@ class EbayListSearchAPI(ListAPIView):
         serializer = self.get_serializer(query, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class EbayListSearchFavoriteAPI(ListAPIView):
+    serializer_class  = EbaySerializerAPI
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self,*args, **kwargs):
+        obj = self.serializer_class.Meta.model
+        qs = obj.objects.filter(delete=False,search__user=self.request.user,favorite=True)
+        return qs
+
+    def list(self, request, *args, **kwargs):
+        query =self.get_queryset().filter(search=kwargs['id'])
+        page = self.paginate_queryset(query)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+            
+        serializer = self.get_serializer(query, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)

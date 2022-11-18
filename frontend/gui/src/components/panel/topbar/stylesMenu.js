@@ -34,6 +34,18 @@ const useStyles = makeStyles(()=>({
             background:"rgb(200, 230, 201)"
         }
     },
+    MenuItemRevoked:{
+        fontFamily: "Public Sans, sans-serif",
+        "&:hover":{
+            background:"rgb(225, 190, 231)",
+        }
+    },
+    MenuItemPending:{
+        fontFamily: "Public Sans, sans-serif",
+        "&:hover":{
+            background:"rgb(187, 222, 251)"
+        }
+    },
     MenuItemError:{
         fontFamily: "Public Sans, sans-serif",
         "&:hover":{

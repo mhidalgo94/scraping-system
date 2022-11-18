@@ -1,85 +1,67 @@
-import React, {useState} from 'react';
-import {Button, Menu, MenuItem, Tooltip, MenuList, Divider, Typography, } from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import CircularProgress from '@mui/material/CircularProgress';
+import NotificationSnackBars from '../../notification/Notification';
+import {Button, Menu, MenuItem, MenuList, Divider} from '@mui/material';
 import {  NotificationsNone  } from '@mui/icons-material';
-import IconButton from '@mui/material/IconButton';
-import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import useAuth from '../../../utils/useAuth';
 import NotificationsMenuItem from './notificationMenu';
 import useStyles  from './stylesMenu';
 import SettingsMenu from './settingsMenu';
+import CheckNotificationComp from './checkNotificationComp';
 import './topbar.css';
 
 function TopBar() {
-    let {user} = useAuth();
+    let {user,logoutUser} = useAuth();
+    const classes = useStyles();
+    const [notificationData, setNotificationData] = useState([]);
+    const [loadingNotifications, setLoadingNotifications] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const openNotification = Boolean(anchorEl);
-    
     const [anchorElSettings, setAnchorElSettings] =useState(null);
     const openSettings = Boolean(anchorElSettings);
-
-
-    const classes = useStyles();
-
-    // data with out fetch
-    const data =[
-        {
-            id:1,
-            company:"Amazon",
-            message:"Existido error al ejecutar la tarea",
-            date:new Date(),
-            read:true,
-            status:"error"
-        },
-        {
-            id:5,
-            company:"Ebay",
-            message:"Tarea realizada correctamente",
-            date:new Date(),
-            read:true,
-            status:"success"
-        },
-        {
-            id:12,
-            company:"Amazon",
-            message:"Existido error al ejecutar la tarea",
-            date:new Date(),
-            read:true,
-            status:"error"
-        },
-        {
-            id:13,
-            company:"Ebay",
-            message:"Tarea realizada correctamente",
-            date:new Date(),
-            read:false,
-            status:"success"
-        },
-        {
-            id:14,
-            company:"Ebay",
-            message:"Existido error al ejecutar la tarea",
-            date:new Date(),
-            read:false,
-            status:"error"
-        },
-    ]
-
-
-
-    const noticacionesRead = data.filter(obj=> obj.read ===true)
-    const noticacionesNoRead = data.filter(obj=> obj.read === false)
     
-    
-    const handleNotification =()=>{
-        alert('Limpiando todas las tareas')
+    const token = JSON.parse(localStorage.getItem("authTokens", null));
+    const headers = {
+        Authorization: "Bearer " + token?.access,
     }
+    // State for component notification
+    const [notificationSnack, setNotificationSnack] = useState({open:false,text:"",horizontal:"center"})
+    const NotificationSnackClose = (e) => {
+        setNotificationSnack((prev)=>({...prev, open:false}));
+    };
+
+
+    const getNotification = ()=>{
+        setLoadingNotifications(true);
+        const endpoint = 'api/user/notification/list/';
+        const url = `${process.env.REACT_APP_API_URL_BASE}/${endpoint}`;
+        axios.get(url, {headers}).then(res=>{
+            setNotificationData(res?.data.results);
+        }).catch(err=>{
+            if (err.response.statusText==='Unauthorized'){
+                logoutUser();
+              }
+            setNotificationSnack( prev=>({...prev,open:true,text:err.message,severity:"error"}));
+            // setLoading(false);
+        }).finally(()=>{
+            setLoadingNotifications(false);
+        })
+
+    }
+
+    useEffect(()=>{
+        const timer = setTimeout(()=>getNotification(), 1000);
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line
+    },[]);
 
   return (
     <div className='topbar'>
         <div className='topbarWrapper'>
             <div className='topLeft'>
-                <span className="logo">Raspin</span>
+                <span className="logo">E-<span>Scratch</span></span>
             </div>
             <div className='topRight'>
                 <div className='topbarIcons'>
@@ -87,7 +69,11 @@ function TopBar() {
                 </div>
                 <div className='topbarIcons'>
                     {/* Button menu for check read all notifiactions */}
-                    <NotificationsNone  color={openNotification ? "success" : undefined} onClick={e=>setAnchorEl(e.currentTarget)} aria-controls={openNotification ? 'basic-menu' : undefined} />
+                    {loadingNotifications ? (
+                        <CircularProgress size={16}/>
+                    ) : (
+                        <NotificationsNone  color={openNotification ? "success" : undefined} onClick={e=>setAnchorEl(e.currentTarget)} aria-controls={openNotification ? 'basic-menu' : undefined} />
+                    )}
                     {/* This Menu show list all notifications */}
                     <Menu
                         className={classes.Menu}
@@ -101,33 +87,16 @@ function TopBar() {
                             style:{borderRadius:"12px"}
                         }}
                         >
-                        <div className={classes.HeaderMenu}>
-                            <div>
-                                <h3 stlye={{margin:0,fontWeight:600,lineHeight:1.5,fontFamily: "Public Sans sans-serif"}}>Notifications</h3>
-                                <p style={{color: "rgb(99, 115, 129)",lineHeight: 1.57143,fontSize: "0.875rem"}}>You have {noticacionesNoRead.length ? `${noticacionesNoRead.length} notifications new` : `notification new`} </p>
-                            </div>
-                            <IconButton color='success'>
-                                <Tooltip title="Check all">
-                                    <DoneAllOutlinedIcon onClick={handleNotification} />
-                                </Tooltip>
-                            </IconButton>
-                        </div>
+                            {/* Btn for checked all notifications   */}
+                        <CheckNotificationComp logoutUser={logoutUser} setNotificationSnack={setNotificationSnack} notificationData={notificationData} setNotificationData={setNotificationData}  headers={headers} />
                         <Divider/>
-                        <Typography ml={1} variant="overline" display="block" style={{fontWeight: 700,color:"rgb(99, 115, 129)"}} gutterBottom>NEW</Typography>
                         <MenuList style={{margin:'0px',padding:'0px'}}>
-                            {noticacionesNoRead?.map((obj, index)=>{
+                            {notificationData?.map((obj, index)=>{
                                 return (
                                     <div key={index} style={!obj.read ? {background:'rgba(145, 158, 171, 0.12)'} : {}} >
-                                        <NotificationsMenuItem  {...obj} />
+                                        <NotificationsMenuItem  {...obj} setNotificationSnack={setNotificationSnack}/>
                                     </div>
-
                                 )
-                            })}
-                        </MenuList>
-                        <Typography ml={1} variant="overline" display="block" style={{fontWeight: 700,color:"rgb(99, 115, 129)"}} gutterBottom>BEFORE THAT</Typography>
-                        <MenuList style={{margin:'0px',padding:'0px'}}>
-                            {noticacionesRead?.map((obj,index)=>{
-                                return <NotificationsMenuItem key={index} {...obj}/>
                             })}
                         </MenuList>
                         <Divider />
@@ -136,7 +105,7 @@ function TopBar() {
                         </MenuItem>
                     </Menu>
                 </div>
-                    {/* Meni settings.*/}
+                    {/* Menu settings.*/}
                 <div className='topbarIcons'>
                     <SettingsOutlinedIcon color={openSettings ? "success" : undefined} onClick={e=>setAnchorElSettings(e.currentTarget)} /> 
                     <SettingsMenu user={user} openSettings={openSettings} anchorElSettings={anchorElSettings}  setAnchorElSettings={setAnchorElSettings}/>
@@ -144,7 +113,10 @@ function TopBar() {
                 <img src={user.image ? `${process.env.REACT_APP_API_URL_BASE}${user.image}` : '/images/default-image-avatar.jpg'} className='img-profile' alt="img-profile"/>
             </div>
         </div>
+        <NotificationSnackBars {...notificationSnack} onClose={NotificationSnackClose}  />
+
     </div>
+
   )
 }
 

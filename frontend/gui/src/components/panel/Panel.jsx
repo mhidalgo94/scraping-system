@@ -1,14 +1,13 @@
 import React from "react";
-import TopBar from './topbar/TopBar'
-import SideLeftBar from './sidebar/SideLeftBar'
-import Content from './content/Content'
-
+import TopBar from './topbar/TopBar';
+import SideLeftBar from './sidebar/SideLeftBar';
+import Content from './content/Content';
 import './panel.css'
 
 const Panel = ({children,...rest}) => {
   return (
     <>
-      <TopBar />
+      <TopBar  />
       <div className="container">
         <SideLeftBar />
         <div className="content-container">

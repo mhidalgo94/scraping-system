@@ -7,7 +7,7 @@ import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutl
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
-import { DataGrid, GridToolbarContainer, GridToolbarExport,GridActionsCellItem} from "@mui/x-data-grid";
+import { DataGrid,GridActionsCellItem,GridToolbar} from "@mui/x-data-grid";
 // Dialog Confirm and Notification
 import DialogConfirm from "../../../dialog/dialogconfirm";
 import useAuth from "../../../../utils/useAuth";
@@ -46,13 +46,6 @@ function ContentDialogEdit({search, description,setEditSearch,setEditDescription
   )
 }
 
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <GridToolbarExport csvOptions={{fileName: 'Search'}}/>
-    </GridToolbarContainer>
-  );
-}
 
 function DataGridSearch(){
   const { logoutUser } = useAuth();
@@ -223,7 +216,7 @@ function DataGridSearch(){
         rows={rows}
         columns={columns}
         loading={loading}
-        components={{ Toolbar: CustomToolbar }}
+        components={{ Toolbar: GridToolbar }}
         pageSize={10}
         checkboxSelection
         disableSelectionOnClick

@@ -1,13 +1,12 @@
-
 from django.db import models
 from django.dispatch import receiver
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.contrib.auth import get_user_model
 from django.conf import settings
-
-
+from core.accounts.models import NotificationModel
 
 User = get_user_model()
+
 TASK_STATUS = (
     ('SUCCESS','SUCCESS'),
     ('FAILURE','FAILURE'),
@@ -28,10 +27,10 @@ class SearchUserModel(models.Model):
     create_update = models.DateTimeField(verbose_name='Date update',auto_now=True, auto_now_add=False)
     description = models.TextField(verbose_name="Description", max_length=255, null=True, blank=True)
     company = models.CharField(max_length=15,choices=COMPANY,default='Amazon')
-    delete= models.BooleanField(verbose_name="Delete", default=False)
+    delete = models.BooleanField(verbose_name="Delete", default=False)
     favorite = models.BooleanField(verbose_name="Favorite", default=False)
     task_id = models.CharField(max_length=255,unique=True,verbose_name='Task ID', blank=True, null=True)
-    status_task = models.CharField(verbose_name="Status Task",max_length=20, choices=TASK_STATUS, default=None, blank=True,null=True)
+    status_task = models.CharField(verbose_name="Status Task",max_length=20, choices=TASK_STATUS, default='SUCCESS', blank=True,null=True)
     scheduled_date = models.DateTimeField(verbose_name='Date scheduled', null=True, blank=True)
 
 
@@ -129,4 +128,16 @@ def pre_save_search_update_delete_children(sender,instance,*args,**kwargs):
     AmazonModel.objects.filter(search=instance.id).update(delete=instance.delete)
     EbayModel.objects.filter(search=instance.id).update(delete=instance.delete)
     LogRequestModel.objects.filter(search_request=instance.id).update(delete=instance.delete)
+
+
+@receiver(post_save, sender=SearchUserModel)
+def post_save_seach_user(sender,instance, created, **kwargs):
     
+    if created == False and instance.delete==True:
+        message = f'You have deleted {instance.search_title}'
+    elif created ==False:
+        message = f'You have updated {instance.search_title}'
+    elif created:
+        message = f'You have created {instance.search_title}'
+
+    NotificationModel.objects.create(search=instance, message=message,status=instance.status_task)
