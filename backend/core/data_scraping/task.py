@@ -50,6 +50,7 @@ def task_send_failure(sender=None, headers=None, body=None,**kwargs):
     id_search = sender.request.kwargs['id_search']
     search = SearchUserModel.objects.get(id=id_search)
     search.status_task = 'FAILURE'
+    search.delete= True
     search.save()
 
     

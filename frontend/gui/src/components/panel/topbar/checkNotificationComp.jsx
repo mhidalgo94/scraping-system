@@ -32,7 +32,10 @@ function CheckNotificationComp({notificationData,setNotificationData,headers,log
         <div className={classes.HeaderMenu}>
             <div>
                 <h3 stlye={{margin:0,fontWeight:600,lineHeight:1.5,fontFamily: "Public Sans sans-serif"}}>Notifications</h3>
-                <p style={{color: "rgb(99, 115, 129)",lineHeight: 1.57143,fontSize: "0.875rem"}}>You have {notificationData.length ? `${notificationData.length} notifications new` : `notification new`} </p>
+                <p style={{color: "rgb(99, 115, 129)",lineHeight: 1.57143,fontSize: "0.875rem"}}>
+                    You have {notificationData.length} {notificationData.length>1 ? ` notifications`:`notification`} . 
+                    {filterReadNotification.length>1 ? `${filterReadNotification.length} notifications new`:` ${filterReadNotification.length} notification new`} 
+                </p>
             </div>
             {Boolean(filterReadNotification.length) && (<IconButton color='success'>
                 <Tooltip title="Check all">

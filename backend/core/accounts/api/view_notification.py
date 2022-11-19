@@ -1,12 +1,19 @@
 from rest_framework import serializers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView, UpdateAPIView
-from rest_framework.views import APIView
-from rest_framework import status
-from rest_framework.response import Response
 from ..models import NotificationModel
 from core.data_scraping.api.serializer_search import SearchUserSerializer
+from rest_framework.pagination import PageNumberPagination
 
+
+# Custom paginator
+
+
+class CustomPagination(PageNumberPagination):
+    page_size = 15
+    page_size_query_param = 'page_size'
+    max_page_size = 20
+    page_query_param = 'page'
 
 # Serializador notifications
 class NotificationSerializer(serializers.ModelSerializer):
@@ -24,26 +31,38 @@ class NotificationSerializer(serializers.ModelSerializer):
 class NotificationListAPIView(ListAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         user = self.request.user
         notification = NotificationModel.objects.filter(search__user=user).order_by('-id')
         return notification
         
-class NotificationsAllCheckedAPIView(APIView):
+class NotificationsAllCheckedAPIView(ListAPIView):
+    serializer_class = NotificationSerializer
     permission_classes = [IsAuthenticated]
 
-    
-    def get(self,request, *args, **kwargs):
-        user = request.user
-        notification = NotificationModel.objects.filter(search__user=user,read=False)
-        for m in notification:
+    def get_queryset(self):
+        user = self.request.user
+        notif = NotificationModel.objects.filter(search__user=user,read=False)
+        for m in notif:
             m.read = True
             m.save()
 
-        notification = NotificationModel.objects.filter(search__user=user)
-        serializer = NotificationSerializer(notification, many=True)
-        return Response({'results':serializer.data}, status=status.HTTP_200_OK)
+        notification = NotificationModel.objects.filter(search__user=user).order_by('-id')
+        return notification
+    
+    
+    # def get(self,request, *args, **kwargs):
+    #     user = request.user
+    #     notification = NotificationModel.objects.filter(search__user=user,read=False)
+    #     for m in notification:
+    #         m.read = True
+    #         m.save()
+
+    #     notification = NotificationModel.objects.filter(search__user=user).order_by('-id')
+    #     serializer = NotificationSerializer(notification, many=True)
+    #     return Response({'results':serializer.data}, status=status.HTTP_200_OK)
 
 class NotificationUpdateAPIView(UpdateAPIView):
     serializer_class = NotificationSerializer

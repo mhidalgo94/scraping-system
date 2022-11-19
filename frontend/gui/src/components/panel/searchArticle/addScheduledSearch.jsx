@@ -88,7 +88,7 @@ function StatusTask({statusTask}){
                             disabled
                             size="small"
                             type="datetime-local"
-                            value={dataState.dateSearch}
+                            value={dataState.scheduled_date.slice(0,-1)}
                             name="dateSearch" fullWidth
                         />
                     </Grid>

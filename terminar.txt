@@ -1,6 +1,6 @@
 **Priority 
 -  La tarea incluya enlaces directo a la tabla de estados de las tareas, agregar a la tarea la notificacion de envio por email.
-
+- Agreagar que te notifique las busquedas
 
 - Incluir una tabla con todas las tareas con los estados pendientes, error, revoke
 

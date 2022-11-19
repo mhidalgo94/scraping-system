@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import CircularProgress from '@mui/material/CircularProgress';
-import NotificationSnackBars from '../../notification/Notification';
-import {Button, Menu, MenuItem, MenuList, Divider} from '@mui/material';
-import {  NotificationsNone  } from '@mui/icons-material';
+// Component Material
+// import  from '@mui/material/Badge';
+import {Button, Menu, MenuItem, MenuList, Divider,Badge} from '@mui/material';
+// Icons Material
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import CircularProgress from '@mui/material/CircularProgress';
+import {  NotificationsNone} from '@mui/icons-material';
+// Utils
 import useAuth from '../../../utils/useAuth';
 import NotificationsMenuItem from './notificationMenu';
 import useStyles  from './stylesMenu';
 import SettingsMenu from './settingsMenu';
+import NotificationSnackBars from '../../notification/Notification';
 import CheckNotificationComp from './checkNotificationComp';
 import './topbar.css';
 
@@ -26,6 +30,27 @@ function TopBar() {
     const headers = {
         Authorization: "Bearer " + token?.access,
     }
+    // State Btn 'More'
+    const [urlBtnMore ,setUrlBtnMore] = useState(null);
+    const [loadingBtnMore ,setLoadingBtnMore] = useState(false);
+
+    const getMore = ()=>{
+        setLoadingBtnMore(true);
+        axios.get(urlBtnMore, {headers}).then(res=>{
+            const result = res?.data.results;
+            setNotificationData([...notificationData, ...result]);
+            setUrlBtnMore(res.data.next);
+        }).catch(err=>{
+            if (err.response.statusText==='Unauthorized'){
+                logoutUser();
+              }
+            setNotificationSnack( prev=>({...prev,open:true,text:err.message,severity:"error"}));
+        }).finally(()=>{
+            setLoadingBtnMore(false);
+        })
+    }
+
+
     // State for component notification
     const [notificationSnack, setNotificationSnack] = useState({open:false,text:"",horizontal:"center"})
     const NotificationSnackClose = (e) => {
@@ -34,11 +59,13 @@ function TopBar() {
 
 
     const getNotification = ()=>{
+        setAnchorEl(null);
         setLoadingNotifications(true);
         const endpoint = 'api/user/notification/list/';
         const url = `${process.env.REACT_APP_API_URL_BASE}/${endpoint}`;
         axios.get(url, {headers}).then(res=>{
             setNotificationData(res?.data.results);
+            setUrlBtnMore(res.data.next);
         }).catch(err=>{
             if (err.response.statusText==='Unauthorized'){
                 logoutUser();
@@ -46,14 +73,17 @@ function TopBar() {
             setNotificationSnack( prev=>({...prev,open:true,text:err.message,severity:"error"}));
             // setLoading(false);
         }).finally(()=>{
-            setLoadingNotifications(false);
+            setLoadingNotifications(false)
         })
 
     }
 
     useEffect(()=>{
-        const timer = setTimeout(()=>getNotification(), 1000);
-        return () => clearTimeout(timer);
+        getNotification()
+        const interval = setInterval(()=>{
+            getNotification();
+          },30000)
+          return ()=> clearInterval(interval);
         // eslint-disable-next-line
     },[]);
 
@@ -72,7 +102,9 @@ function TopBar() {
                     {loadingNotifications ? (
                         <CircularProgress size={16}/>
                     ) : (
-                        <NotificationsNone  color={openNotification ? "success" : undefined} onClick={e=>setAnchorEl(e.currentTarget)} aria-controls={openNotification ? 'basic-menu' : undefined} />
+                        <Badge badgeContent={notificationData.filter(v=> v.read===false).length} color="primary">
+                            <NotificationsNone  color={openNotification ? "success" : undefined} onClick={e=>setAnchorEl(e.currentTarget)} aria-controls={openNotification ? 'basic-menu' : undefined} />
+                        </Badge>
                     )}
                     {/* This Menu show list all notifications */}
                     <Menu
@@ -84,7 +116,7 @@ function TopBar() {
                         'aria-labelledby': 'basic-button',
                         }}
                         PaperProps={{
-                            style:{borderRadius:"12px"}
+                            style:{borderRadius:"12px", maxHeight:"500px"}
                         }}
                         >
                             {/* Btn for checked all notifications   */}
@@ -94,14 +126,16 @@ function TopBar() {
                             {notificationData?.map((obj, index)=>{
                                 return (
                                     <div key={index} style={!obj.read ? {background:'rgba(145, 158, 171, 0.12)'} : {}} >
-                                        <NotificationsMenuItem  {...obj} setNotificationSnack={setNotificationSnack}/>
+                                        <NotificationsMenuItem  {...obj} setNotificationSnack={setNotificationSnack} />
                                     </div>
                                 )
                             })}
                         </MenuList>
                         <Divider />
                         <MenuItem style={{padding:0}}>
-                            <Button onClick={()=>setAnchorEl(null)} variant="text" color="success" style={{width:"100%",lineHeight: "1.71429",fontSize:"0.875rem",textTransform:"capitalize"}}>Close</Button>
+                            <Button disabled={Boolean(!urlBtnMore)} onClick={getMore} variant="text" color="success" style={{width:"100%",lineHeight: "1.71429",fontSize:"0.875rem",textTransform:"capitalize"}}>
+                                {loadingBtnMore ? <CircularProgress size={16}/> : "More"}
+                                </Button>
                         </MenuItem>
                     </Menu>
                 </div>

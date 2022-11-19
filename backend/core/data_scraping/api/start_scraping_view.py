@@ -98,7 +98,7 @@ class ScheduleScrapingApiView(APIView):
         user_model =  get_user_model()
         user = user_model.objects.get(id=user_id)
         search = SearchUserModel.objects.create(search_title=search_title, description=desc,mont_page=pages, user=user,company=company, status_task='PENDING',scheduled_date=date_scheduled)
-        result = schedule_scraping_task.apply_async(kwargs={'id_search':search.id, 'pages':pages},eta=str_to_datetime.astimezone(pytz.UTC))#link=save_status_search.s(),eta=str_to_datetime.astimezone(pytz.UTC))
+        result = schedule_scraping_task.apply_async(kwargs={'id_search':search.id, 'pages':pages},eta=str_to_datetime.astimezone(pytz.UTC))
         search.task_id = result.id
         search.save()
         status_task = {
@@ -107,7 +107,7 @@ class ScheduleScrapingApiView(APIView):
             "description":search.description,
             "company":search.company,
             "mount_page": search.mont_page,
-            "dateSearch":dateSearch,
+            "scheduled_date":dateSearch,
             "status_task": search.status_task
         }
         return Response({"result":status_task}, status=status.HTTP_200_OK)
@@ -122,6 +122,7 @@ class RevokeTaskApiView(APIView):
         if task_id:
             search = SearchUserModel.objects.get(task_id=task_id)
             search.status_task = 'REVOKED'
+            search.delete = True
             search.save()
             result = AsyncResult(task_id)
             result.revoke()

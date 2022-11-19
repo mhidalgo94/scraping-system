@@ -52,11 +52,11 @@ function NotificationsMenuItem({message,recieved_date,search,status,setNotificat
 
     
     const gotToSearch= () =>{
-        if (search.delete===true){
-            setNotificationSnack( prev=>({...prev,open:true,text:'This search has been removed.',severity:"warning"}));
-            return false
+        if (search.status_task==='SUCCESS'){
+            navigate(`/dashboart/list-articles/${search.id}/${search.company}`)
+        }else{
+            setNotificationSnack( prev=>({...prev,open:true,text:`The task status ${search.status_task}.`,severity:"warning"}));
         }
-        navigate(`/dashboart/list-articles/${search.id}/${search.company}`)
     }
 
     return (

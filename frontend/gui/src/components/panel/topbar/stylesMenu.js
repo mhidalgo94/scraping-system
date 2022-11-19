@@ -8,7 +8,8 @@ const useStyles = makeStyles(()=>({
         marginRight:"10px",
         borderRadius:"12px", 
         minWidth:"300px",
-        paddingBottom:'0px',
+        maxHeight:"500px",
+        paddingBottom:"0px",
         fontFamily: "Public Sans, sans-serif"
     },
     HeaderMenu:{
@@ -22,6 +23,7 @@ const useStyles = makeStyles(()=>({
     Container:{
         paddingLeft:"0px",
         marginLeft:'0px',
+        maxHeight:"500px",
         
     },
     MenuItemContainer:{

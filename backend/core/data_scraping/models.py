@@ -131,8 +131,9 @@ def pre_save_search_update_delete_children(sender,instance,*args,**kwargs):
 
 
 @receiver(post_save, sender=SearchUserModel)
-def post_save_seach_user(sender,instance, created, **kwargs):
-    
+def post_save_seach_user(sender,instance, created, update_fields,**kwargs):
+    if instance.task_id and instance.delete==False:
+        return
     if created == False and instance.delete==True:
         message = f'You have deleted {instance.search_title}'
     elif created ==False:
