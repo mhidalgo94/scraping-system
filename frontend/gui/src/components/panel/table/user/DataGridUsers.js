@@ -27,10 +27,10 @@ function RowImagenFullName(cellValues){
 
 function StatusRow(cellValues){
   const status = cellValues.row.status ? (
-  <Chip size="small"  label="Active" style={{backgroundColor:'rgba(84, 214, 44, 0.16)',color:'rgb(34, 154, 22)', fontSize:'0.9rem',fontWeight:'600'}} />
+  <Chip size="small"  label="Active" style={{backgroundColor:'rgba(84, 214, 44, 0.16)', fontSize:'0.9rem',fontWeight:'600'}} />
   )
    : 
-   (<Chip size="small" label="Banned" color="error" style={{backgroundColor:'rgba(255, 72, 66, 0.16)',color:'rgb(183, 33, 54)', fontSize:'0.9rem',fontWeight:'600'}} />);
+   (<Chip size="small" label="Banned" color="error" style={{backgroundColor:'rgba(255, 72, 66, 0.16)',fontSize:'0.9rem',fontWeight:'600'}} />);
   return status
 }
 

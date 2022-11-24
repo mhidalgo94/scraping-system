@@ -14,15 +14,12 @@ function CardProfile({img,is_active,staff, setUserData}){
         setUserData(prev=>({...prev,[e.target.name]:e.target.checked}))
     }
 
-
-
     const handleUploadImg = ()=>{
         hiddenImgInput.current.click();
 
     }
 
     const handleFileSelect = (event)=>{
-        console.log(event)
         const fileUploaded = event.target.files[0];
         setUserData(prev=>({...prev,[event.target.name]:fileUploaded}))
         setUrlImg(URL.createObjectURL(fileUploaded))

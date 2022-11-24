@@ -1,10 +1,12 @@
-import PanelPage from "./PanelPage";
+
+import IndexPanelHome from '../../components/panel/home/indexpanelhome'
+
 
 function PanelHome(){
   return (
-    <PanelPage title="This is de panel home">
-      <h4>Home</h4>
-    </PanelPage>
+
+      <IndexPanelHome />
+
   );
 };
 

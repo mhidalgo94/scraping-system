@@ -3,11 +3,11 @@ import {makeStyles} from '@mui/styles';
 
 const useStyles = makeStyles(()=>({
     btnCreate:{
-        fontWeight: 700,
+        fontWeight: '700 !important',
         lineHeight: 2,
         fontSize: "0.875rem",
         textTransform: "capitalize",
-        fontFamily: "Public Sans, sans-serif",
+        fontFamily: 'Source Sans Pro, sans-serif !important',
         
     },
     btnRemoveTask:{
@@ -27,7 +27,7 @@ const useStyles = makeStyles(()=>({
         fontSize: '0.875rem',
         textTransform: 'capitalize',
         fontFamily: 'Public Sans, sans-serif',
-    }
+    },
 }));
 
 export default useStyles;

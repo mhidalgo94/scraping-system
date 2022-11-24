@@ -4,17 +4,36 @@ from rest_framework.views import APIView
 from rest_framework import permissions as permss
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 
+# Custom Pagination
+class CustomPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+    page_query_param = 'page'
 
+# ClassView
 class SearchUserListAPI(ListAPIView):
     queryset = SearchUserSerializer.Meta.model.objects.all()
     serializer_class = SearchUserSerializer
     permission_classes = [permss.IsAuthenticated]
-
     def get_queryset(self,*args, **kwargs):
         obj = self.serializer_class.Meta.model
         qs = obj.objects.filter(delete=False,user=self.request.user, status_task='SUCCESS').order_by('-id')
         return qs
+
+class SearchUserAllListAPI(ListAPIView):
+    queryset = SearchUserSerializer.Meta.model.objects.all()
+    serializer_class = SearchUserSerializer
+    permission_classes = [permss.IsAuthenticated]
+
+
+    def get_queryset(self,*args, **kwargs):
+        obj = self.serializer_class.Meta.model
+        qs = obj.objects.filter(delete=False,user=self.request.user).order_by('-id')
+        return qs
+
 
 
 class SearchUserUpdateAPI(UpdateAPIView):

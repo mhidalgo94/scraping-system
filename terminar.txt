@@ -1,15 +1,10 @@
 **Priority 
--  La tarea incluya enlaces directo a la tabla de estados de las tareas, agregar a la tarea la notificacion de envio por email.
-- Agreagar que te notifique las busquedas
+- Crear home Panel Admin
+- Arreglar paginator articulos
+- Agregar a la tarea la notificacion de envio por email.
 
 - Incluir una tabla con todas las tareas con los estados pendientes, error, revoke
-
-TERMINAR VENTANA NOTIFICACIONES
-- Make loadin when start fetch api
-- Terminar backend para limpiar las notificaciones
-
+- Terminar las paginas 404
 MENU  SETTINGS
 - settings sistem, logout  (terminar)
-- Make settings endpoint
-- Make menu settings
 

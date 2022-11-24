@@ -2,7 +2,7 @@
 from django.urls import path
 from .views_amazon import AmazonListAPI, AmazonDestroyAPI, AmazonUpdateAPI, AmazonListSearchAPI,AmazonListSearchFavoriteAPI
 from .views_ebay import EbayListAPI, EbayDestroyAPI, EbayUpdateAPI,EbayListSearchAPI, EbayListSearchFavoriteAPI
-from .views_search import SearchUserDestroyAPI, SearchUserListAPI, SearchUserUpdateAPI, ArticlesBySearchRetrieveAPI
+from .views_search import SearchUserDestroyAPI, SearchUserListAPI, SearchUserUpdateAPI, ArticlesBySearchRetrieveAPI,SearchUserAllListAPI
 from .views_log import LogRequestListAPI, LogRequestDestroyAPI, LogRequestUpdateAPI, LogRequestSearchRetrieveAPI
 from .start_scraping_view import ScrapingApiView,ScheduleScrapingApiView, RevokeTaskApiView,TaskScheduledPendingApiView
 
@@ -32,6 +32,7 @@ urlpatterns =[
     path('ebay/<int:id>/delete/', EbayDestroyAPI.as_view(), name='ebay-delete'),
     # Model Search API
     path('list/search/', SearchUserListAPI.as_view(), name='search-user'),
+    path('list/search/all/', SearchUserAllListAPI.as_view(), name='search-user-all'),
     path('search/<int:id>/update/', SearchUserUpdateAPI.as_view(), name='search-user-update'),
     path('search/<int:id>/delete/', SearchUserDestroyAPI.as_view(), name='search-user-delete'),
     path('list/articles/<int:id>/', ArticlesBySearchRetrieveAPI.as_view(), name='list-articles'), # List the Articles but need id search

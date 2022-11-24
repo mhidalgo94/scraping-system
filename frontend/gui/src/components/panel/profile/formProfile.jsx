@@ -1,26 +1,24 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios';
-import Container from '@mui/material/Container';
+import {Container,Button} from '@mui/material';
 import CircularProgress from "@mui/material/CircularProgress";
 import { blue } from "@mui/material/colors";
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import useAuth from "../../../utils/useAuth";
 import DialogConfirm from '../../dialog/dialogconfirm'
-
 import './formprofile.css'
 
 function FormUser({firstname, lastname, user_name,email, last_login, date_update,setUserData, loading,setNotification}){
-    const {user,logoutUser} = useAuth()
-    const navigate = useNavigate()
+    const {user,logoutUser} = useAuth();
+    const navigate = useNavigate();
     // state for Dialog confirm
-    const [openDialog, setOpenDialog] = useState(false)
-    const [textDialog,setTextDialog] = useState({title:"",content:""})
-    const [loadingAcept, setLoadingAcept] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false);
+    const [textDialog,setTextDialog] = useState({title:"",content:""});
+    const [loadingAcept, setLoadingAcept] = useState(false);
     const handleChange = (e)=>{
-        setUserData(prev=>({...prev,[e.target.name]:e.target.value}))
+        setUserData(prev=>({...prev,[e.target.name]:e.target.value}));
     }
     
     const onAcept = ()=>{
@@ -34,7 +32,6 @@ function FormUser({firstname, lastname, user_name,email, last_login, date_update
         axios.delete(url,{headers}).then(res=>{
             navigate('/dashboart/user');
         }).catch(err => {
-            console.log(err)
             if (err.response.statusText==='Unauthorized'){
                 logoutUser()
               }
@@ -83,7 +80,7 @@ function FormUser({firstname, lastname, user_name,email, last_login, date_update
                 <div className="container-footer-user">
                     {user.mang && (
                         
-                        <Button variant="contained" disabled={loading} id="btn-error" onClick={handleDeleteUser}>Delete
+                        <Button style={{fontFamily: 'Source Sans Pro, sans-serif', fontWeight:700, marginRight:'5px'}} color='error' variant="contained" disabled={loading} onClick={handleDeleteUser}>Delete
                         {loading && (
                             <CircularProgress
                             size={24}
@@ -99,7 +96,7 @@ function FormUser({firstname, lastname, user_name,email, last_login, date_update
                         )}
                         </Button>
                     )}
-                    <Button id="btn-success" disabled={loading} variant="contained" type="submit">Save Change
+                    <Button style={{fontFamily: 'Source Sans Pro, sans-serif', fontWeight:700}} disabled={loading} variant="contained" type="submit">Save Change
                     {loading && (
                             <CircularProgress
                             size={24}

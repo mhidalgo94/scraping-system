@@ -11,7 +11,7 @@ import useAuth from "../../utils/useAuth";
 
 function PanelUserEdit(){
     const {userId:userIdParams} = useParams()
-    const {logoutUser} = useAuth()
+    const {logoutUser, user} = useAuth()
     const [userId, setUserId] = useState(userIdParams)
     const [loadingContent, setLoadingContent] = useState(true)
     const [saveBtnLoading, setSaveBtnLoading] = useState(false)
@@ -61,7 +61,6 @@ function PanelUserEdit(){
         }
           
         axios.get(url,{headers}).then(function (res) {
-          console.log(res);
           setUserData(res.data);
           setLoadingContent(false);
         }).catch(function (err) {
@@ -72,10 +71,14 @@ function PanelUserEdit(){
         });
     },[userId,logoutUser])
 
-    
+    const getFullName= ()=>{
+      const firstname = user.firstname[0].toUpperCase() + user.firstname.slice(1);
+      const lastname = user.lastname[0].toUpperCase() + user.lastname.slice(1);
+      return firstname + ' ' + lastname;
+    }
 
   return (
-    <PanelPage loading={loadingContent} title={`Edit profile: ${userId.toString().toUpperCase()}`} >
+    <PanelPage loading={loadingContent} title={`Edit profile: ${getFullName()}`} >
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2} style={{padding:'10px', margin:"auto"}} >
               <Grid item xs={5}>

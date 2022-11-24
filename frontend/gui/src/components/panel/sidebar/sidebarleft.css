@@ -85,7 +85,7 @@
     text-transform: capitalize;
     border-radius: 8px;
     font-weight: 600;
-    
+    cursor:pointer;    
 }
 
 .sidebar-list-items-title{
