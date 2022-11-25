@@ -63,7 +63,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     id_verify = models.UUIDField(default = uuid.uuid4, editable = False)
     date_update = models.DateTimeField(auto_now=True)
     img = models.ImageField(verbose_name='Imagen', null=True, blank=True, upload_to=upload_to_image)
-
+    enable_notific = models.BooleanField(verbose_name='Enable Notification', default=False)
     # Overwrite objects
     objects =  UserManager()
     USERNAME_FIELD = 'user_name'

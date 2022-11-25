@@ -1,5 +1,5 @@
-from celery import Task, shared_task
-from celery.result import AsyncResult
+from django.core.mail import send_mail
+from celery import shared_task
 from celery.signals import task_failure, task_success
 from core.data_scraping.api.serializer_search import SearchUserSerializer
 from core.data_scraping.models import SearchUserModel
@@ -12,6 +12,10 @@ from core.script.ebay_store import ejecut_scraping_Ebay
 
 #     def after_return(self, *args, **kwargs):
 #         print('Mi clase abstract: {0!r}'.format(self.request))
+
+
+def notifications_email(email):
+    pass
 
 
 
@@ -50,7 +54,6 @@ def task_send_failure(sender=None, headers=None, body=None,**kwargs):
     id_search = sender.request.kwargs['id_search']
     search = SearchUserModel.objects.get(id=id_search)
     search.status_task = 'FAILURE'
-    search.delete= True
     search.save()
 
     

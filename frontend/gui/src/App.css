@@ -95,9 +95,9 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    margin: 0 5px;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+    margin: 0 5px;
     outline: 0px;
     cursor: pointer;
     user-select: none;
@@ -105,7 +105,7 @@
     appearance: none;
     text-decoration: none;
     font-weight: 700;
-    line-height: 1.71429;
+    line-height: 2;
     font-size: 0.875rem;
     text-transform: capitalize;
     font-family: "Public Sans", sans-serif;

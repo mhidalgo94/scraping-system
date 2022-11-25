@@ -1,5 +1,4 @@
 **Priority 
-- Crear home Panel Admin
 - Arreglar paginator articulos
 - Agregar a la tarea la notificacion de envio por email.
 

@@ -122,7 +122,6 @@ class RevokeTaskApiView(APIView):
         if task_id:
             search = SearchUserModel.objects.get(task_id=task_id)
             search.status_task = 'REVOKED'
-            search.delete = True
             search.save()
             result = AsyncResult(task_id)
             result.revoke()

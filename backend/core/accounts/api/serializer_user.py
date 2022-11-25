@@ -105,7 +105,7 @@ class UserRetrieViewSerializerAPI(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['firstname','lastname','email','user_name', 'password','is_active','staff','img', 'last_login', 'date_update']
+        fields = ['firstname','lastname','email','user_name', 'password','is_active','enable_notific','staff','img', 'last_login', 'date_update']
 
     def update(self, instance, validated_data):
         user = super().update(instance, validated_data)

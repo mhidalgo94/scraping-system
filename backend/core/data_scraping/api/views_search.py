@@ -31,8 +31,9 @@ class SearchUserAllListAPI(ListAPIView):
 
     def get_queryset(self,*args, **kwargs):
         obj = self.serializer_class.Meta.model
-        qs = obj.objects.filter(delete=False,user=self.request.user).order_by('-id')
+        qs = obj.objects.filter(user=self.request.user, delete=False).order_by('-id')
         return qs
+
 
 
 

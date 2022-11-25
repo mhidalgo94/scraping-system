@@ -35,7 +35,7 @@ function GraficPieHome({allData}){
         <div style={{display:'grid', justifyContent:'center'}}>
             {data.length ? (
             <PieChart width={400} height={400}>
-                <Pie data={data} cx="50%" cy="50%" nameKey="name" dataKey="value" label legendType="circle">
+                <Pie data={data} cx="50%" cy="50%" nameKey="name" dataKey="value" legendType="circle">
                     {data.map((entry, index) => {
                         return (
                         <>

@@ -29,7 +29,7 @@ class SearchUserSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = SearchUserModel
-        fields = ['id','user','search_title', 'mont_page', 'create_date', 'description','company','task_id','status_task','delete']
+        fields = ['id','user','search_title', 'mont_page', 'create_date', 'description','company','task_id','status_task','delete','scheduled_date']
 
     
     def get_user(self, obj):

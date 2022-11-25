@@ -4,6 +4,7 @@ import PrivateRoute from './pages/private/PrivateRoute';
 import PanelHome from './pages/panel/PanelHome';
 import PanelArticles from "./pages/panel/PanelArticles";
 import PanelSearch from './pages/panel/PanelSearch';
+import PanelSearchAll from './pages/panel/PanelSearchAll';
 import PanelSearchLogAll from './pages/panel/PanelSearchLogAll';
 import PanelSearchLog from './pages/panel/PanelSearchLog';
 import PanelUsers from './pages/panel/PanelUser';
@@ -33,6 +34,7 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path='/dashboart/home' element={<PanelHome />} />
               <Route path='/dashboart/search' element={<PanelSearch />} />
+              <Route path='/dashboart/search/all' element={<PanelSearchAll />} />
               <Route path='/dashboart/start-search' element={<PanelStartSearch />} />
               <Route path='/dashboart/search-log' element={<PanelSearchLogAll />} />
               <Route path='/dashboart/search-log/:idLog' element={<PanelSearchLog />} />

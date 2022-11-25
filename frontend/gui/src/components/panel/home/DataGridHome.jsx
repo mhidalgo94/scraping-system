@@ -19,7 +19,7 @@ function StatusRow(cellValues){
 
 const DataGridTaskScheduled = ({data=[],loading})=>{
 
-  const rows = data.map((obj) =>({
+  const rows = data.slice(0,10).map((obj) =>({
     id: obj.id,
     search: obj.search_title,
     desc: obj.description,

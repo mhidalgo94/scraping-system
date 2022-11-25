@@ -5,7 +5,7 @@ import Switch from '@mui/material/Switch';
 import './cardprofile.css';
 import useAuth from "../../../utils/useAuth";
 
-function CardProfile({img,is_active,staff, setUserData}){
+function CardProfile({img,is_active,enable_notific,staff, setUserData}){
     const hiddenImgInput  = useRef(null)
     const [urlImg, setUrlImg] = useState(img)
     const {user} = useAuth();
@@ -43,9 +43,16 @@ function CardProfile({img,is_active,staff, setUserData}){
             <div className="profile-status">
                 <div>
                     <h3>Activate User</h3>
-                    <p>Appliy disabled account</p>
+                    <p>Apply disabled account</p>
                 </div>
                 <Switch color="success" checked={is_active} onClick={handleToggleActive}  name="is_active"/>
+            </div>
+            <div className="profile-status">
+                <div>
+                    <h3>Enable Notifications</h3>
+                    <p>Apply notifications</p>
+                </div>
+                <Switch color="success" checked={enable_notific} onClick={handleToggleActive}  name="enable_notific"/>
             </div>
             {user.mang &&
                 (<div className="profile-status">
