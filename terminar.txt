@@ -2,7 +2,6 @@
 - Arreglar paginator articulos
 - Agregar a la tarea la notificacion de envio por email.
 
-- Incluir una tabla con todas las tareas con los estados pendientes, error, revoke
 - Terminar las paginas 404
 MENU  SETTINGS
 - settings sistem, logout  (terminar)

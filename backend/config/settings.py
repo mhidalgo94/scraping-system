@@ -152,6 +152,9 @@ COMPANY_TO_SCRAPING = ['ebay','amazon']
 COMPANY_TO_MODEL = [
         ('amazon','amazon'),
         ('ebay','ebay'),
+        ('etsy','etsy'),
+        ('macys','macys'),
+        ('walmart','walmart'),
     ]
 
 

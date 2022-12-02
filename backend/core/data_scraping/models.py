@@ -65,7 +65,7 @@ class AmazonModel(models.Model):
     class Meta:
         verbose_name = "amazon"
         verbose_name_plural = "amazon"
-        db_table = "Data Amazon"
+        db_table = "Amazon"
 
 
 class EbayModel(models.Model):
@@ -96,9 +96,97 @@ class EbayModel(models.Model):
     class Meta:
         verbose_name = "ebay"
         verbose_name_plural = "ebay"
-        db_table = "Data Ebay"
+        db_table = "Ebay"
+
+class WalmartModel(models.Model):
+    search =  models.ForeignKey(SearchUserModel, null=True, on_delete=models.CASCADE)
+    page =    models.PositiveSmallIntegerField(verbose_name="Page",default =1)
+    product = models.CharField(verbose_name="Product name",max_length=255)
+    img =     models.URLField(verbose_name="URL image", max_length=500)
+    url_product = models.URLField(verbose_name="URL article", max_length=500)
+    rate =    models.CharField(verbose_name="Rate", max_length=20,blank=True, null=True)
+    top_rate= models.BooleanField(verbose_name="Top rate", default=False)
+    price =   models.FloatField(verbose_name="Price")
+    old_price =   models.FloatField(verbose_name="Before price")
+    delete = models.BooleanField(verbose_name="Delete", default=False)
+    create_date = models.DateTimeField(verbose_name='Date create',auto_now_add=True,auto_now=False)
+    date_update = models.DateTimeField(verbose_name='Date update',auto_now=True, auto_now_add=False)
+    favorite = models.BooleanField(verbose_name="Favorite", default=False)
 
 
+    @property
+    def get_save(self):
+        return '%.2f' %(float(self.old_price - self.price))
+
+
+    def __str__(self):
+        return f'{self.product}'
+
+
+    class Meta:
+        verbose_name = "walmart"
+        verbose_name_plural = "walmart"
+        db_table = "Walmart"
+
+class EtsyModel(models.Model):
+    search =  models.ForeignKey(SearchUserModel, null=True, on_delete=models.CASCADE)
+    page =    models.PositiveSmallIntegerField(verbose_name="Page",default =1)
+    product = models.CharField(verbose_name="Product name",max_length=255)
+    img =     models.URLField(verbose_name="URL image", max_length=500)
+    url_product = models.URLField(verbose_name="URL article", max_length=500)
+    rate =    models.CharField(verbose_name="Rate", max_length=20,blank=True, null=True)
+    top_rate= models.BooleanField(verbose_name="Top rate", default=False)
+    price =   models.FloatField(verbose_name="Price")
+    old_price =   models.FloatField(verbose_name="Before price")
+    delete = models.BooleanField(verbose_name="Delete", default=False)
+    create_date = models.DateTimeField(verbose_name='Date create',auto_now_add=True,auto_now=False)
+    date_update = models.DateTimeField(verbose_name='Date update',auto_now=True, auto_now_add=False)
+    favorite = models.BooleanField(verbose_name="Favorite", default=False)
+
+
+    @property
+    def get_save(self):
+        return '%.2f' %(float(self.old_price - self.price))
+
+
+    def __str__(self):
+        return f'{self.product}'
+
+
+    class Meta:
+        verbose_name = "etsy"
+        verbose_name_plural = "etsy"
+        db_table = "Etsy"
+
+class MacysModel(models.Model):
+    search =  models.ForeignKey(SearchUserModel, null=True, on_delete=models.CASCADE)
+    page =    models.PositiveSmallIntegerField(verbose_name="Page",default =1)
+    product = models.CharField(verbose_name="Product name",max_length=255)
+    img =     models.URLField(verbose_name="URL image", max_length=500)
+    url_product = models.URLField(verbose_name="URL article", max_length=500)
+    rate =    models.CharField(verbose_name="Rate", max_length=20,blank=True, null=True)
+    top_rate= models.BooleanField(verbose_name="Top rate", default=False)
+    price =   models.FloatField(verbose_name="Price")
+    old_price =   models.FloatField(verbose_name="Before price")
+    delete = models.BooleanField(verbose_name="Delete", default=False)
+    create_date = models.DateTimeField(verbose_name='Date create',auto_now_add=True,auto_now=False)
+    date_update = models.DateTimeField(verbose_name='Date update',auto_now=True, auto_now_add=False)
+    favorite = models.BooleanField(verbose_name="Favorite", default=False)
+
+
+    @property
+    def get_save(self):
+        return '%.2f' %(float(self.old_price - self.price))
+
+
+    def __str__(self):
+        return f'{self.product}'
+
+
+    class Meta:
+        verbose_name = "macys"
+        verbose_name_plural = "macys"
+        db_table = "Macys"
 
 class LogRequestModel(models.Model):
     

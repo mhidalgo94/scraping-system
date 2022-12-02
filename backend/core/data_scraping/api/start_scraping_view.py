@@ -10,6 +10,7 @@ from django.conf import settings
 from rest_framework.permissions import IsAuthenticated
 from core.script.ebay_store import ejecut_scraping_Ebay
 from core.script.amazon_store import ejecut_scraping_Amazon
+from core.script.walmart_store import ejecut_scraping_Walmart
 from core.data_scraping.task import schedule_scraping_task
 from celery.result import AsyncResult
 
@@ -48,17 +49,29 @@ class ScrapingApiView(APIView):
             mont_page=int(data_request['mount_page']),
             user=user,
             company=data_request['company'])
+            
         if data_request['company'] == 'ebay':
             result = ejecut_scraping_Ebay(search, int(data_request['mount_page']))
             serializer = SearchSerializer(result)
             return Response({"result":serializer.data}, status=status.HTTP_200_OK) 
-
         elif data_request['company'] == 'amazon':
             ejecut_scraping_Amazon(search, int(data_request['mount_page']))
             serializer = SearchSerializer(result)
             return Response({"result":serializer.data}, status=status.HTTP_200_OK) 
+        elif data_request['company'] == 'walmart':
+            ejecut_scraping_Walmart(search, int(data_request['mount_page']))
+            serializer = SearchSerializer(result)
+            return Response({"result":serializer.data}, status=status.HTTP_200_OK)
+        elif data_request['company'] == 'etsy':
+            ejecut_scraping_Walmart(search, int(data_request['mount_page']))
+            serializer = SearchSerializer(result)
+            return Response({"result":serializer.data}, status=status.HTTP_200_OK)
+        elif data_request['company'] == 'macys':
+            ejecut_scraping_Walmart(search, int(data_request['mount_page']))
+            serializer = SearchSerializer(result)
+            return Response({"result":serializer.data}, status=status.HTTP_200_OK)
 
-        return Response({"detail":"Send the necessary parameters."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":"You need send the necessary parameters."}, status=status.HTTP_400_BAD_REQUEST)
 
 class ScheduleScrapingApiView(APIView):
     permission_classes = [IsAuthenticated]

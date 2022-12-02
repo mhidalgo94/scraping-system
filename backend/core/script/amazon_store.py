@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-
 from core.data_scraping.models import SearchUserModel,LogRequestModel, AmazonModel
 
 
@@ -70,7 +69,7 @@ class AmazonWebScraping:
                 rate = rate[0]+"/"+rate[3]
                 data['rate'] = rate
             else:
-                rate = ""
+                data['rate'] = ""
 
             price = result.find("span", {"class":"a-offscreen"})
             if price:
@@ -105,11 +104,6 @@ def ejecut_scraping_Amazon(search, page,company, user,task_id=None):
             page=obj['page'],
             url_page = obj['url_page']
         )
-        
-        if 'rate' in obj:
-            rate = obj['rate']
-        else:
-            rate = ""
 
         registro = AmazonModel(
             search=search,
@@ -117,7 +111,7 @@ def ejecut_scraping_Amazon(search, page,company, user,task_id=None):
             product=obj['title'],
             img=obj['image'],
             url_product=obj['url_article'],
-            rate=rate,
+            rate=obj['rate'],
             price=obj['price']
         )
         bulk_list_registro.append(registro)
