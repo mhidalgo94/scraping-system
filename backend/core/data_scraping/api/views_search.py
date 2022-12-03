@@ -75,7 +75,7 @@ class SearchUserDestroyAPI(APIView):
 
 class ArticlesBySearchRetrieveAPI(RetrieveAPIView):
     serializer_class = SearchArticlesSerializer
-    permission_classes = [permss.IsAuthenticated]
+    # permission_classes = [permss.IsAuthenticated]
     lookup_field = 'id'
 
 

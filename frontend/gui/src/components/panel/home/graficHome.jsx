@@ -39,7 +39,7 @@ function GraficPieHome({allData}){
                     {data.map((entry, index) => {
                         return (
                         <>
-                            <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />
+                            <Cell key={`cell-${entry.id}`} fill={COLORS[entry.name]} />
                         </>
                     )})}
                 </Pie>

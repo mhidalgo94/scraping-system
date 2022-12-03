@@ -65,12 +65,14 @@ class MacysWebScraping:
             discount = product.find('span',{'class':'discount'})
             
             if regular != None:
-                regular = regular.text.strip()
+                regular = regular.text.strip()[1:]
             if prices_original != None:
-                prices_original = prices_original.text.strip()
+                prices_original = prices_original.text.strip()[1:]
 
             if discount != None:
-                price = discount.text.strip()
+                text = discount.text.strip()
+                get_index = text[text.index('$')+1:]
+                price = get_index
                 old_price = regular or prices_original
             else:
                 price = regular or prices_original

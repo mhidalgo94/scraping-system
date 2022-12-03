@@ -45,7 +45,6 @@ function DataGridSearchAll(){
 
   useEffect(() => {
     axios.get(url,{headers}).then(res=>{
-      console.log(res)
       setData(res.data.results);
       setLoading(false);
     }).catch(err=>{
@@ -70,17 +69,17 @@ function DataGridSearchAll(){
     mont_page: obj.mont_page,
     status : obj.status_task,
     create_date: new Date(obj.create_date).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " "),
-    scheduled_date: new Date(obj.scheduled_date).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ") || "Non-scheduled",
+    scheduled_date: obj.scheduled_date ? new Date(obj.scheduled_date).toISOString().slice(0, 19).replace(/-/g, "/").replace("T", " ") : "Non-scheduled",
     description: obj.description || "without description",
   }));
   
   let columns = [
     { field: "search", headerName: "Search", flex:1 },
     { field: "company", headerName: "Company",description:"Company Search", flex:1 },
-    { field: "mont_page", headerName: "Mont Page",width:70,description:"Mont page in paginator",flex:1 },
+    { field: "mont_page", headerName: "Mont Page",width:20,description:"Mont page in paginator",flex:1 },
     { field: "status", headerName: "Status", minWidth: 50 ,flex:1,headerClassName: 'header-bg',renderCell: StatusRow},
     { field: "create_date", headerName: "Date created",minWidth: 200 },
-    { field: "scheduled_date", headerName: "Date created",minWidth: 200 },
+    { field: "scheduled_date", headerName: "Scheduled Date",minWidth: 200 },
     { field: "description", headerName: "Description", flex:1 },
   ];
 

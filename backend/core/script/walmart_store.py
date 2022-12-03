@@ -75,9 +75,12 @@ class WalmartWebScraping:
             # Rate product
             div_rate =info_container.find('div',{'class':'flex items-center mt2'})
             if div_rate != None:
-                rate_text = div_rate.find('span',{'class':'w_Bl'}).text
+                print(div_rate)
+                rate_text = div_rate.find('span',{'class':'w_iUH7'}).text
                 list_rate_text = rate_text.split()
                 data['rate'] = f'{list_rate_text[0]}/{list_rate_text[3]}'
+            else:
+                data['rate'] = ''
 
             price_box = info_container.find('div',{'data-automation-id':'product-price'})
             price_children = price_box.findChildren()
@@ -117,11 +120,6 @@ def ejecut_scraping_Walmart(search, page):
             page=obj['page'],
             url_page = obj['url_page']
         )
-        
-        if 'rate' in obj:
-            rate = obj['rate']
-        else:
-            rate = ""
 
         registro = WalmartModel(
             search=search,
@@ -129,7 +127,7 @@ def ejecut_scraping_Walmart(search, page):
             product=obj['title'],
             img=obj['image'],
             url_product=obj['url_product'],
-            rate=rate,
+            rate=obj['rate'],
             price=obj['price'],
             old_price=obj['old_price']
         )

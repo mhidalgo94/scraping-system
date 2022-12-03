@@ -148,7 +148,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-COMPANY_TO_SCRAPING = ['ebay','amazon']
+COMPANY_TO_SCRAPING = ['ebay','amazon','etsy','macys','walmart']
 COMPANY_TO_MODEL = [
         ('amazon','amazon'),
         ('ebay','ebay'),

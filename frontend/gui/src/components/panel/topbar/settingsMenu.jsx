@@ -1,12 +1,13 @@
 import useStyles from './stylesMenu';
 import {Divider,MenuItem , Menu } from '@mui/material';
 import {Link} from 'react-router-dom';
+import useAuth from '../../../utils/useAuth'
 
 
 
 export default function SettingsMenu({user, anchorElSettings, setAnchorElSettings,openSettings}){
     const classes = useStyles()
-
+    const {logoutUser} = useAuth()
 
     return (
         <Menu
@@ -40,9 +41,10 @@ export default function SettingsMenu({user, anchorElSettings, setAnchorElSetting
         </MenuItem>
         <Divider/>
         <MenuItem  className={classes.MenuItemContainer}>
-            <Link to="/logout" className={classes.MenuItemLink}>
+            
+            <span onClick={()=>logoutUser()}className={classes.MenuItemLink} style={{border:'none'}}>
                 Logout
-            </Link>
+            </span>
         </MenuItem>
     </Menu>
     )

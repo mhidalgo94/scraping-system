@@ -1,7 +1,10 @@
 
-from ..models import SearchUserModel, EbayModel, AmazonModel
+from ..models import SearchUserModel, EbayModel, AmazonModel, EtsyModel, MacysModel, WalmartModel
 from .serializer_amazon import AmazonSerializerAPI
 from .serializer_ebay import EbaySerializerAPI
+from .serializer_etsy import EtsySerializerAPI
+from .serializer_macys import MacysSerializerAPI
+from .serializer_walmart import WalmartSerializerAPI
 from rest_framework import serializers
 from django.forms import model_to_dict
 
@@ -59,6 +62,15 @@ class SearchArticlesSerializer(serializers.ModelSerializer):
         elif obj.company == 'amazon':
             qs = AmazonModel.objects.filter(search=obj.id, delete=False)
             return AmazonSerializerAPI(qs,many=True).data
+        elif obj.company == 'etsy':
+            qs = EtsyModel.objects.filter(search=obj.id, delete=False)
+            return EtsySerializerAPI(qs,many=True).data
+        elif obj.company == 'walmart':
+            qs = WalmartModel.objects.filter(search=obj.id, delete=False)
+            return WalmartSerializerAPI(qs,many=True).data
+        elif obj.company == 'macys':
+            qs = MacysModel.objects.filter(search=obj.id, delete=False)
+            return MacysSerializerAPI(qs,many=True).data
 
 
 

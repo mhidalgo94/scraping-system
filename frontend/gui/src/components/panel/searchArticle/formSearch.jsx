@@ -15,7 +15,7 @@ function SearchArticle({setNotification}){
     // const navigate = useNavigate()
     const [company, setCompany] = useState('ebay')
     const {logoutUser} = useAuth()
-    const allCompany = ['ebay','amazon']
+    const allCompany = ['ebay','amazon','etsy','walmart','macys']
     const [recentSearch, setRecentSearch] = useState([])
     const [loadingSearch, setLoadingSearch] = useState(false)
     const handleSubmit = (e)=>{

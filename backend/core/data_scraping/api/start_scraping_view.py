@@ -11,6 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 from core.script.ebay_store import ejecut_scraping_Ebay
 from core.script.amazon_store import ejecut_scraping_Amazon
 from core.script.walmart_store import ejecut_scraping_Walmart
+from core.script.etsy_store import ejecut_scraping_Etsy
+from core.script.macys_store import ejecut_scraping_Macys
 from core.data_scraping.task import schedule_scraping_task
 from celery.result import AsyncResult
 
@@ -49,27 +51,35 @@ class ScrapingApiView(APIView):
             mont_page=int(data_request['mount_page']),
             user=user,
             company=data_request['company'])
-            
-        if data_request['company'] == 'ebay':
-            result = ejecut_scraping_Ebay(search, int(data_request['mount_page']))
-            serializer = SearchSerializer(result)
-            return Response({"result":serializer.data}, status=status.HTTP_200_OK) 
-        elif data_request['company'] == 'amazon':
-            ejecut_scraping_Amazon(search, int(data_request['mount_page']))
-            serializer = SearchSerializer(result)
-            return Response({"result":serializer.data}, status=status.HTTP_200_OK) 
-        elif data_request['company'] == 'walmart':
-            ejecut_scraping_Walmart(search, int(data_request['mount_page']))
-            serializer = SearchSerializer(result)
-            return Response({"result":serializer.data}, status=status.HTTP_200_OK)
-        elif data_request['company'] == 'etsy':
-            ejecut_scraping_Walmart(search, int(data_request['mount_page']))
-            serializer = SearchSerializer(result)
-            return Response({"result":serializer.data}, status=status.HTTP_200_OK)
-        elif data_request['company'] == 'macys':
-            ejecut_scraping_Walmart(search, int(data_request['mount_page']))
-            serializer = SearchSerializer(result)
-            return Response({"result":serializer.data}, status=status.HTTP_200_OK)
+        try:
+            if data_request['company'] == 'ebay':
+                result = ejecut_scraping_Ebay(search, int(data_request['mount_page']))
+                serializer = SearchSerializer(result)
+                return Response({"result":serializer.data}, status=status.HTTP_200_OK) 
+
+            elif data_request['company'] == 'amazon':
+                result = ejecut_scraping_Amazon(search, int(data_request['mount_page']))
+                serializer = SearchSerializer(result)
+                return Response({"result":serializer.data}, status=status.HTTP_200_OK) 
+
+            elif data_request['company'] == 'walmart':
+                result = ejecut_scraping_Walmart(search, int(data_request['mount_page']))
+                serializer = SearchSerializer(result)
+                return Response({"result":serializer.data}, status=status.HTTP_200_OK)
+
+            elif data_request['company'] == 'etsy':
+                result = ejecut_scraping_Etsy(search, int(data_request['mount_page']))
+                serializer = SearchSerializer(result)
+                return Response({"result":serializer.data}, status=status.HTTP_200_OK)
+
+            elif data_request['company'] == 'macys':
+                result = ejecut_scraping_Macys(search, int(data_request['mount_page']))
+                serializer = SearchSerializer(result)
+                return Response({"result":serializer.data}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(str(e))
+            return Response({"detail":"Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({"detail":"You need send the necessary parameters."}, status=status.HTTP_400_BAD_REQUEST)
 

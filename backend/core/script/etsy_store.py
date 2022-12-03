@@ -78,12 +78,12 @@ class EtsyWebScraping:
                 rate = '0/5'
 
             link_tag = product.find('a')
-            link_product = link_tag['href']            
-
+            link_product = link_tag['href']
             data['url_product'] = link_product
             data['price'] = price
             data['old_price'] = old_price
             data['status_code']  = int(response.status_code)
+            data['rate'] = rate
             data['page'] = int(page)
             data['url_page'] = url_page
             date = datetime.strptime(response.headers['Date'],'%a, %d %b %Y %H:%M:%S GMT')
@@ -94,14 +94,10 @@ class EtsyWebScraping:
     def __repr__(self) -> str:
         return self.response_status_code
 
-
-
-
-
-def ejecut_scraping_Etsy(search, page,company, user,task_id=None):
-    scraping = EtsyWebScraping(search, page).run()
+        
+def ejecut_scraping_Etsy(search, page):
+    scraping = EtsyWebScraping(search.search_title, page).run()
     bulk_list_registro = list()
-    search = SearchUserModel.objects.create(search_title=search, mont_page=page, user=user,company=company,task_id=task_id)
     for obj in scraping:
         LogRequestModel.objects.get_or_create(
             search_request=search,
@@ -110,22 +106,45 @@ def ejecut_scraping_Etsy(search, page,company, user,task_id=None):
             page=obj['page'],
             url_page = obj['url_page']
         )
-        
-        if 'rate' in obj:
-            rate = obj['rate']
-        else:
-            rate = ""
 
         registro = EtsyModel(
             search=search,
             page=obj['page'],
             product=obj['title'],
             img=obj['image'],
-            url_product=obj['url_article'],
-            rate=rate,
-            price=obj['price']
+            url_product=obj['url_product'],
+            rate=obj['rate'],
+            price=obj['price'],
+            old_price=obj['old_price']
         )
         bulk_list_registro.append(registro)
 
     EtsyModel.objects.bulk_create(bulk_list_registro)
     return search
+
+# def ejecut_scraping_Etsy(search, page,company, user,task_id=None):
+#     scraping = EtsyWebScraping(search, page).run()
+#     bulk_list_registro = list()
+#     search = SearchUserModel.objects.create(search_title=search, mont_page=page, user=user,company=company,task_id=task_id)
+#     for obj in scraping:
+#         LogRequestModel.objects.get_or_create(
+#             search_request=search,
+#             status_code_request=obj['status_code'],
+#             date_request=obj['date_request'],
+#             page=obj['page'],
+#             url_page = obj['url_page']
+#         )
+        
+#         registro = EtsyModel(
+#             search=search,
+#             page=obj['page'],
+#             product=obj['title'],
+#             img=obj['image'],
+#             url_product=obj['url_article'],
+#             rate=obj['rate'],
+#             price=obj['price']
+#         )
+#         bulk_list_registro.append(registro)
+
+#     EtsyModel.objects.bulk_create(bulk_list_registro)
+#     return search

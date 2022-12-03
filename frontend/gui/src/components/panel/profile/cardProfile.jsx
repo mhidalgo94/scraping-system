@@ -50,7 +50,7 @@ function CardProfile({img,is_active,enable_notific,staff, setUserData}){
             <div className="profile-status">
                 <div>
                     <h3>Enable Notifications</h3>
-                    <p>Apply notifications</p>
+                    <p>Apply notifications with email</p>
                 </div>
                 <Switch color="success" checked={enable_notific} onClick={handleToggleActive}  name="enable_notific"/>
             </div>
