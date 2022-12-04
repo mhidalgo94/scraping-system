@@ -101,8 +101,8 @@ class User(AbstractBaseUser,PermissionsMixin):
 @receiver(post_save, sender=User)
 def post_create_verify_user(sender,instance,created,**kwargs):
     if created and instance.is_admin==False:
-        message = f'Hi {instance.get_full_name()}.\Y have created an account in our system.\nTo verify your account use this code:{instance.id_verify}'
-        send_mail('Registro de Cuenta.', message, settings.EMAIL_HOST_USER,[instance.email])
+        message = f'Hi {instance.get_full_name()}.\Y have created an account in our system.\nTo verify your account use this code: {instance.id_verify}'
+        send_mail('Account Register.', message, settings.EMAIL_HOST_USER,[instance.email])
 
 
 

@@ -1,4 +1,5 @@
 from django.core.mail import send_mail
+from django.conf import settings
 from celery import shared_task
 from celery.signals import task_failure, task_success
 from core.data_scraping.api.serializer_search import SearchUserSerializer
@@ -9,10 +10,13 @@ from core.script.walmart_store import ejecut_scraping_Walmart
 from core.script.etsy_store import ejecut_scraping_Etsy
 from core.script.macys_store import ejecut_scraping_Macys
 
-def notifications_email(email):
-    pass
+# Need create template for send email, thath email is only test
+def notifications_email(instance):
+    if instance.user.enable_notific:
+        message = f'Hi {instance.user.get_full_name()}.\Your task "{instance.search_title}" has been successfully completed.\n'
+        send_mail('Task Complete.', message, settings.EMAIL_HOST_USER,[instance.email])
 
-#  This task is not implemented in the app. It was to test background tasks
+# This task is not implemented in the app. It was to test background tasks
 @shared_task
 def scraping_task(dicc):
     if dicc['company'] == 'ebay':
@@ -30,7 +34,6 @@ def schedule_scraping_task(self,**kwargs,):
     search = SearchUserModel.objects.get(id=int(kwargs['id_search']))
     if search.company == 'ebay':
         result = ejecut_scraping_Ebay(search, int(search.mont_page))
-        
     elif search.company == 'amazon':
         result = ejecut_scraping_Amazon(search, int(search.mont_page))
     elif search.company == 'walmart':
@@ -38,20 +41,21 @@ def schedule_scraping_task(self,**kwargs,):
     elif search.company == 'etsy':
         result = ejecut_scraping_Etsy(search, int(search.mont_page))
     elif search.company == 'macys':
-        result = ejecut_scraping_Etsy(search, int(search.mont_page))
+        result = ejecut_scraping_Macys(search, int(search.mont_page))
     
     return SearchUserSerializer(result).data
 
 # Signal before before task publish
 # Signal no work version 5.2.7, change to  4.2
-@task_success.connect#(sender='core.data_scraping.task.schedule_scraping_task')
+@task_success.connect
 def task_send_success(sender=None, headers=None, body=None,**kwargs):
     id_search = int(sender.request.kwargs['id_search'])
     search = SearchUserModel.objects.get(id=id_search)
     search.status_task = 'SUCCESS'
     search.save()
+    notifications_email(SearchUserModel)
 
-@task_failure.connect#(sender='core.data_scraping.task.schedule_scraping_task')
+@task_failure.connect
 def task_send_failure(sender=None, headers=None, body=None,**kwargs):
     id_search = sender.request.kwargs['id_search']
     search = SearchUserModel.objects.get(id=id_search)

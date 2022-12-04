@@ -1,8 +1,4 @@
 **Priority 
 - Arreglar paginator articulos
-- Agregar a la tarea la notificacion de envio por email.
 
-- Terminar las paginas 404
-MENU  SETTINGS
-- settings sistem, logout  (terminar)
 
