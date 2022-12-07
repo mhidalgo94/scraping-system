@@ -1,5 +1,5 @@
 version: '3'
-
+# You only need match  variable env with settings django
 services:
   app-django:
     image: python:3.9-alpine3.13
@@ -13,16 +13,15 @@ services:
       sh -c "python3 /app-django/manage.py migrate &&
              python3 /app-django/manage.py runserver 0.0.0.0:8000"
     env_file:
-      - ./backend/.env
+      - ./.env
     networks:
       - myred
     depends_on:
       - db
-
   db:
     image: postgres:10-alpine
     env_file:
-      - ./.env.dev
+      - ./.env
     volumes: 
       - ./data/postgres:/var/lib/postgresql/data
     networks:
@@ -36,19 +35,14 @@ services:
     build:
       context: .
     command: celery -A app-django worker -l info
-    volumes:
-      - ./data/celery:/app-django
     env_file:
-      - ./.env.dev
+      - ./.env
     networks:
       - myred
     depends_on:
       - db
       - redis
       - app-django
-volumes:
-  pgdata:
-
 
 networks:
   myred:
