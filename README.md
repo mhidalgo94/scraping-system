@@ -26,7 +26,11 @@ $ cd backend
 $ python manage.py makemigrations
 $ python manage.py migrate
 ```
-
+### Create super user
+***You need superuser for manage user panel.***
+```python3
+$ python manage.py createsuperuser
+```
 
 ### Install Redis Server
 [Redis-Doc](https://developer.redis.com/create)
