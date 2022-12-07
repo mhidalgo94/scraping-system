@@ -90,7 +90,7 @@ function TopBar() {
     <div className='topbar'>
         <div className='topbarWrapper'>
             <div className='topLeft'>
-                <span className="logo">E-<span>Scratch</span></span>
+                <span className="logo"></span>
             </div>
             <div className='topRight'>
                 <div className='topbarIcons'>
